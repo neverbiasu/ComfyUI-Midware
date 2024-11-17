@@ -24,10 +24,7 @@
       "interpolation": "LANCZOS",
       "crop_position": "top",
       "sharpening": 0.05,
-      "image": [
-        "1",
-        0
-      ]
+      "image": ["1", 0]
     },
     "class_type": "PrepImageForClipVision",
     "_meta": {
@@ -39,10 +36,7 @@
       "interpolation": "LANCZOS",
       "crop_position": "top",
       "sharpening": 0.05,
-      "image": [
-        "2",
-        0
-      ]
+      "image": ["2", 0]
     },
     "class_type": "PrepImageForClipVision",
     "_meta": {
@@ -61,10 +55,7 @@
   "9": {
     "inputs": {
       "preset": "PLUS (high strength)",
-      "model": [
-        "8",
-        0
-      ]
+      "model": ["8", 0]
     },
     "class_type": "IPAdapterUnifiedLoader",
     "_meta": {
@@ -79,22 +70,10 @@
       "sampler_name": "euler",
       "scheduler": "normal",
       "denoise": 1,
-      "model": [
-        "19",
-        0
-      ],
-      "positive": [
-        "15",
-        0
-      ],
-      "negative": [
-        "16",
-        0
-      ],
-      "latent_image": [
-        "11",
-        0
-      ]
+      "model": ["19", 0],
+      "positive": ["15", 0],
+      "negative": ["16", 0],
+      "latent_image": ["11", 0]
     },
     "class_type": "KSampler",
     "_meta": {
@@ -123,14 +102,8 @@
   },
   "13": {
     "inputs": {
-      "samples": [
-        "10",
-        0
-      ],
-      "vae": [
-        "12",
-        0
-      ]
+      "samples": ["10", 0],
+      "vae": ["12", 0]
     },
     "class_type": "VAEDecode",
     "_meta": {
@@ -139,10 +112,7 @@
   },
   "14": {
     "inputs": {
-      "images": [
-        "13",
-        0
-      ]
+      "images": ["13", 0]
     },
     "class_type": "PreviewImage",
     "_meta": {
@@ -152,10 +122,7 @@
   "15": {
     "inputs": {
       "text": "a man",
-      "clip": [
-        "8",
-        1
-      ]
+      "clip": ["8", 1]
     },
     "class_type": "CLIPTextEncode",
     "_meta": {
@@ -165,10 +132,7 @@
   "16": {
     "inputs": {
       "text": "blurry, bad quality, lowres, ugly_man, 2boys, ",
-      "clip": [
-        "8",
-        1
-      ]
+      "clip": ["8", 1]
     },
     "class_type": "CLIPTextEncode",
     "_meta": {
@@ -183,18 +147,9 @@
       "start_at": 0,
       "end_at": 1,
       "embeds_scaling": "V only",
-      "model": [
-        "20",
-        0
-      ],
-      "ipadapter": [
-        "9",
-        1
-      ],
-      "image": [
-        "1",
-        0
-      ]
+      "model": ["20", 0],
+      "ipadapter": ["9", 1],
+      "image": ["1", 0]
     },
     "class_type": "IPAdapterPreciseStyleTransfer",
     "_meta": {
@@ -210,18 +165,9 @@
       "start_at": 0,
       "end_at": 1,
       "embeds_scaling": "V only",
-      "model": [
-        "9",
-        0
-      ],
-      "ipadapter": [
-        "9",
-        1
-      ],
-      "image": [
-        "4",
-        0
-      ]
+      "model": ["9", 0],
+      "ipadapter": ["9", 1],
+      "image": ["4", 0]
     },
     "class_type": "IPAdapterFaceID",
     "_meta": {

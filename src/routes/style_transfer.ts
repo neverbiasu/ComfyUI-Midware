@@ -40,7 +40,6 @@ styleTransferRouter.post("/", upload, async (req: Request, res: Response) => {
     const styleImage = files["style"][0];
     const contentImage = files["content"][0];
 
-    // 添加日志以调试文件对象
     console.log("Style Image:", styleImage.originalname);
     console.log("Content Image:", contentImage.originalname);
 
