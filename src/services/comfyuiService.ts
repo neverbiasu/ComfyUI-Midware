@@ -1,13 +1,16 @@
 import axios from "axios";
+import dotenv from "dotenv";
 
-const baseUrls = ["http://172.17.192.1:8188", "http://127.0.0.1:8188"];
+dotenv.config();
+const baseUrls = ["http://localhost:8188"];
 
 class ComfyUIService {
   private baseUrl: string;
+  private comfyUIDir: string;
 
   constructor() {
-    // 默认使用第一个URL，如果无法连接可以做更多逻辑处理
     this.baseUrl = baseUrls[0];
+    this.comfyUIDir = process.env.COMFYUI_DIR as string;
   }
 
   async executeWorkflow(workflowJson: object): Promise<string> {
@@ -28,9 +31,31 @@ class ComfyUIService {
       const response = await axios.get(
         `${this.baseUrl}/api/history/${promptId}`
       );
-      const outputs = response.data.outputs;
-      const filenames = outputs.map((output: any) => output.filename);
-      return filenames;
+
+      const data = response.data[promptId];
+      const outputs = data.outputs;
+
+      if (!outputs || typeof outputs !== "object") {
+        throw new Error("Invalid outputs data");
+      }
+
+      // 提取所有项中的 "images" 字段
+      const filepaths: string[] = [];
+
+      Object.keys(outputs).forEach((key) => {
+        const output = outputs[key];
+        if (output.images && Array.isArray(output.images)) {
+          output.images.forEach((image: any) => {
+            const filename = image.filename;
+            const folder = image.type;
+            filepaths.push(`${this.comfyUIDir}/${folder}/${filename}`);
+          });
+        } else {
+          console.warn("Invalid output format:", output);
+        }
+      });
+
+      return filepaths;
     } catch (error) {
       console.error("Error fetching result:", error);
       throw new Error("Fetching result failed");
