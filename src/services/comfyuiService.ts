@@ -39,7 +39,6 @@ class ComfyUIService {
         throw new Error("Invalid outputs data");
       }
 
-      // 提取所有项中的 "images" 字段
       const filepaths: string[] = [];
 
       Object.keys(outputs).forEach((key) => {

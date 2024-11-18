@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import comfyuiService from "../services/comfyuiService";
 import dotenv from "dotenv";
+import { sendImageResponse } from "../utils/send_image";
 
 dotenv.config();
 
@@ -20,59 +21,66 @@ const workflowJson = fs.readFileSync(
 );
 
 const getImagePath = (filename: string) => {
-  const comfyuiDir = process.env.COMFYUI_DIR as string; // 从环境变量获取 ComfyUI 目录
+  const comfyuiDir = process.env.COMFYUI_DIR as string;
   if (!comfyuiDir) {
     throw new Error("COMFYUI_DIR 环境变量未设置");
   }
   return path.join(comfyuiDir, "input", filename);
 };
 
-styleTransferRouter.post("/", upload, async (req: Request, res: Response) => {
-  try {
-    const { positivePrompt, negativePrompt } = req.body;
+styleTransferRouter.post(
+  "/",
+  upload,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { positivePrompt, negativePrompt } = req.body;
 
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-    if (!files || !files["style"] || !files["content"]) {
-      res.status(400).json({ error: "缺少必要的文件" });
-      return;
-    }
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      if (!files || !files["style"] || !files["content"]) {
+        res
+          .status(400)
+          .json({ error: "Style and content images are required" });
+        return;
+      }
 
-    const styleImage = files["style"][0];
-    const contentImage = files["content"][0];
+      const styleImage = files["style"][0];
+      const contentImage = files["content"][0];
 
-    console.log("Style Image:", styleImage.originalname);
-    console.log("Content Image:", contentImage.originalname);
+      const styleImagePath = getImagePath(styleImage.filename);
+      const contentImagePath = getImagePath(contentImage.filename);
 
-    const styleImagePath = getImagePath(styleImage.filename);
-    const contentImagePath = getImagePath(contentImage.filename);
+      fs.copyFileSync(styleImage.path, styleImagePath);
+      fs.unlinkSync(styleImage.path);
+      fs.copyFileSync(contentImage.path, contentImagePath);
+      fs.unlinkSync(contentImage.path);
 
-    fs.copyFileSync(styleImage.path, styleImagePath);
-    fs.unlinkSync(styleImage.path);
-    fs.copyFileSync(contentImage.path, contentImagePath);
-    fs.unlinkSync(contentImage.path);
+      const workflow = JSON.parse(workflowJson);
 
-    const workflow = JSON.parse(workflowJson);
+      workflow["15"].inputs.text = positivePrompt;
+      workflow["16"].inputs.text = negativePrompt;
 
-    workflow["15"].inputs.text = positivePrompt;
-    workflow["16"].inputs.text = negativePrompt;
+      workflow["1"].inputs.file = styleImagePath;
+      workflow["2"].inputs.file = contentImagePath;
 
-    workflow["1"].inputs.file = styleImagePath;
-    workflow["2"].inputs.file = contentImagePath;
+      const wrappedWorkflow = {
+        prompt: workflow,
+      };
 
-    const wrappedWorkflow = {
-      prompt: workflow,
-    };
+      const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
 
-    const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
+      await new Promise((resolve) => setTimeout(resolve, 20000));
 
-    res.json({ promptId });
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "未知错误" });
+      const filepaths = await comfyuiService.getResult(promptId);
+
+      sendImageResponse(res, filepaths);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: "Unknown error" });
+      }
     }
   }
-});
+);
 
 export default styleTransferRouter;

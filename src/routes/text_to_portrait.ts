@@ -3,6 +3,7 @@ import fs from "fs";
 import multer from "multer";
 import comfyuiService from "../services/comfyuiService";
 import dotenv from "dotenv";
+import { sendImageResponse } from "../utils/send_image";
 
 dotenv.config();
 
@@ -17,17 +18,20 @@ const workflowJson = fs.readFileSync(
 textToPortraitRouter.post(
   "/",
   upload.none(),
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const { text } = req.body;
+
+      if (!text) {
+        res.status(400).json({ error: "Text is required" });
+        return;
+      }
 
       const workflow = JSON.parse(workflowJson);
 
       const textPrompt = `${text}, close-up, portrait_(object), positive_face, looking_at_viewer, face_shot, front`;
 
       workflow["13"].inputs.text = textPrompt;
-
-      console.log("Workflow:", workflow);
 
       const wrappedWorkflow = {
         prompt: workflow,
@@ -39,15 +43,9 @@ textToPortraitRouter.post(
 
       const filepaths = await comfyuiService.getResult(promptId);
 
-      console.log("Filepaths:", filepaths);
-
-      if (filepaths.length !== 0) {
-        const imagePath = filepaths[0];
-        res.sendFile(imagePath);
-      } else {
-        res.status(500).json({ error: "未找到图片" });
-      }
+      sendImageResponse(res, filepaths);
     } catch (error) {
+      console.error("Error generating portrait:", error);
       if (error instanceof Error) {
         res.status(500).json({ error: error.message });
       } else {
