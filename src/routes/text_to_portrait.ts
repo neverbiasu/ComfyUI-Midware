@@ -36,14 +36,26 @@ textToPortraitRouter.post(
       const wrappedWorkflow = {
         prompt: workflow,
       };
-
       const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
+      let filepaths;
+      let retries = 0;
+      const maxRetries = 30;
 
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      while (!filepaths && retries < maxRetries) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        try {
+          filepaths = await comfyuiService.getResult(promptId);
+        } catch (error) {
+          console.error("Error fetching result:", error);
+          retries++;
+        }
+      }
 
-      const filepaths = await comfyuiService.getResult(promptId);
-
-      sendImageResponse(res, filepaths);
+      if (filepaths) {
+        sendImageResponse(res, filepaths);
+      } else {
+        res.status(500).json({ error: "Failed to retrieve image paths" });
+      }
     } catch (error) {
       console.error("Error generating portrait:", error);
       if (error instanceof Error) {
