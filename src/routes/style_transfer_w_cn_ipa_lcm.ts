@@ -43,9 +43,10 @@ styleTransferWCnIpaLcmRouter.post(
 
       const styleImage = files["style"][0];
       const contentImage = files["content"][0];
-
-      const styleImagePath = getImagePath(styleImage.filename);
-      const contentImagePath = getImagePath(contentImage.filename);
+      const styleImagePath = getImagePath(styleImage.originalname);
+      const contentImagePath = getImagePath(contentImage.originalname);
+      const contentImageName = contentImage.originalname;
+      const styleImageName = styleImage.originalname;
 
       fs.copyFileSync(styleImage.path, styleImagePath);
       fs.unlinkSync(styleImage.path);
@@ -54,8 +55,8 @@ styleTransferWCnIpaLcmRouter.post(
 
       const workflow = JSON.parse(workflowJson);
 
-      workflow["1"].inputs.file = contentImagePath;
-      workflow["15"].inputs.file = styleImagePath;
+      workflow["1"].inputs.image = contentImageName;
+      workflow["15"].inputs.image = styleImageName;
 
       const wrappedWorkflow = {
         prompt: workflow,
