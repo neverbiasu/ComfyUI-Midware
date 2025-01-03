@@ -46,8 +46,11 @@ styleTransferRouter.post(
       const styleImage = files["style"][0];
       const contentImage = files["content"][0];
 
-      const styleImagePath = getImagePath(styleImage.filename);
-      const contentImagePath = getImagePath(contentImage.filename);
+      const styleImagePath = getImagePath(styleImage.originalname);
+      const contentImagePath = getImagePath(contentImage.originalname);
+      
+      const contentImageName = contentImage.originalname;
+      const styleImageName = styleImage.originalname;
 
       fs.copyFileSync(styleImage.path, styleImagePath);
       fs.unlinkSync(styleImage.path);
@@ -59,8 +62,8 @@ styleTransferRouter.post(
       workflow["15"].inputs.text = positivePrompt;
       workflow["16"].inputs.text = negativePrompt;
 
-      workflow["1"].inputs.file = styleImagePath;
-      workflow["2"].inputs.file = contentImagePath;
+      workflow["1"].inputs.image = contentImageName;
+      workflow["15"].inputs.image = styleImageName;
 
       const wrappedWorkflow = {
         prompt: workflow,
@@ -68,7 +71,7 @@ styleTransferRouter.post(
 
       const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
 
-      await new Promise((resolve) => setTimeout(resolve, 20000));
+      await new Promise((resolve) => setTimeout(resolve, 30000));
 
       const filepaths = await comfyuiService.getResult(promptId);
 

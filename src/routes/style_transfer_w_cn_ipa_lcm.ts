@@ -43,8 +43,10 @@ styleTransferWCnIpaLcmRouter.post(
 
       const styleImage = files["style"][0];
       const contentImage = files["content"][0];
+
       const styleImagePath = getImagePath(styleImage.originalname);
       const contentImagePath = getImagePath(contentImage.originalname);
+      
       const contentImageName = contentImage.originalname;
       const styleImageName = styleImage.originalname;
 
@@ -64,7 +66,7 @@ styleTransferWCnIpaLcmRouter.post(
 
       const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
 
-      await new Promise((resolve) => setTimeout(resolve, 20000));
+      await new Promise((resolve) => setTimeout(resolve, 30000));
 
       const filepaths = await comfyuiService.getResult(promptId);
 
