@@ -1,0 +1,398 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 1102090125130055,
+      "steps": 30,
+      "cfg": 1.6,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "44",
+        0
+      ],
+      "positive": [
+        "29",
+        0
+      ],
+      "negative": [
+        "29",
+        1
+      ],
+      "latent_image": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "dreamshaperXL_turboDPMSDE.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "5": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "16": {
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "18": {
+    "inputs": {
+      "text": [
+        "43",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "19": {
+    "inputs": {
+      "text": "",
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "23": {
+    "inputs": {
+      "interpolation": "LANCZOS",
+      "crop_position": "top",
+      "sharpening": 0.05,
+      "image": [
+        "60",
+        0
+      ]
+    },
+    "class_type": "PrepImageForClipVision",
+    "_meta": {
+      "title": "Prep Image For ClipVision"
+    }
+  },
+  "24": {
+    "inputs": {
+      "preset": "PLUS (high strength)",
+      "model": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "IPAdapterUnifiedLoader",
+    "_meta": {
+      "title": "IPAdapter Unified Loader"
+    }
+  },
+  "25": {
+    "inputs": {
+      "image": "5.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "26": {
+    "inputs": {
+      "image": "WechatIMG779.jpeg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "29": {
+    "inputs": {
+      "strength": 1,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "52",
+        0
+      ],
+      "negative": [
+        "19",
+        0
+      ],
+      "control_net": [
+        "30",
+        0
+      ],
+      "image": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced",
+    "_meta": {
+      "title": "Apply ControlNet"
+    }
+  },
+  "30": {
+    "inputs": {
+      "control_net_name": "controlnet-union-sdxl-1.0-promax.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "33": {
+    "inputs": {
+      "images": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "38": {
+    "inputs": {
+      "low_threshold": 100,
+      "high_threshold": 200,
+      "resolution": 512,
+      "image": [
+        "23",
+        0
+      ]
+    },
+    "class_type": "CannyEdgePreprocessor",
+    "_meta": {
+      "title": "Canny Edge"
+    }
+  },
+  "42": {
+    "inputs": {
+      "prompt_mode": "fast",
+      "image_analysis": "off",
+      "text": "",
+      "image": [
+        "23",
+        0
+      ]
+    },
+    "class_type": "ClipInterrogator",
+    "_meta": {
+      "title": "Clip Interrogator ♾️Mixlab"
+    }
+  },
+  "43": {
+    "inputs": {
+      "text": [
+        "42",
+        0
+      ],
+      "text2": "a drawing of a group of animals in a room, kids fantasy drawing, underwater scene, kid's drawing, a child's drawing, kids drawing, children’s drawing, children's drawing, undersea temple with fish, drawing for children, child's drawing, undersea environment, by Un'ichi Hiratsuka, children's book drawing, children drawing"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "44": {
+    "inputs": {
+      "weight_style": 1,
+      "weight_composition": 1,
+      "expand_style": false,
+      "combine_embeds": "average",
+      "start_at": 0,
+      "end_at": 1,
+      "embeds_scaling": "V only",
+      "model": [
+        "24",
+        0
+      ],
+      "ipadapter": [
+        "24",
+        1
+      ],
+      "image_style": [
+        "45",
+        0
+      ],
+      "image_composition": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "IPAdapterStyleComposition",
+    "_meta": {
+      "title": "IPAdapter Style & Composition SDXL"
+    }
+  },
+  "45": {
+    "inputs": {
+      "interpolation": "LANCZOS",
+      "crop_position": "top",
+      "sharpening": 0.05,
+      "image": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "PrepImageForClipVision",
+    "_meta": {
+      "title": "Prep Image For ClipVision"
+    }
+  },
+  "49": {
+    "inputs": {
+      "images": [
+        "23",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "52": {
+    "inputs": {
+      "conditioning_1": [
+        "18",
+        0
+      ],
+      "conditioning_2": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "ConditioningCombine",
+    "_meta": {
+      "title": "Conditioning (Combine)"
+    }
+  },
+  "53": {
+    "inputs": {
+      "text": [
+        "55",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "54": {
+    "inputs": {
+      "prompt_mode": "fast",
+      "image_analysis": "off",
+      "text": "",
+      "image": [
+        "45",
+        0
+      ]
+    },
+    "class_type": "ClipInterrogator",
+    "_meta": {
+      "title": "Clip Interrogator ♾️Mixlab"
+    }
+  },
+  "55": {
+    "inputs": {
+      "text": [
+        "54",
+        0
+      ],
+      "text2": "the starr by vincent van gogh van gogh van gogh van van van van van van van van van van van van van van van van van van van van van van, style of van gogh starry night, vincent van gogh painting, van gogh painting, starry-night!!!!!!!!!!!!!!!!!!!!, stary night painting, style of vincent van gogh, the starry night, van gogh art style"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "60": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "width": 512,
+      "height": 512,
+      "crop": "disabled",
+      "image": [
+        "26",
+        0
+      ]
+    },
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Upscale Image"
+    }
+  },
+  "61": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "width": 512,
+      "height": 512,
+      "crop": "disabled",
+      "image": [
+        "25",
+        0
+      ]
+    },
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Upscale Image"
+    }
+  }
+}
