@@ -5,6 +5,7 @@ import path from "path";
 import comfyuiService from "../services/comfyuiService";
 import dotenv from "dotenv";
 import { sendImageResponse } from "../utils/send_image";
+import { getImagePath } from "../utils/path";
 
 dotenv.config();
 
@@ -19,14 +20,6 @@ const workflowJson = fs.readFileSync(
   "./src/assets/style_transfer.json",
   "utf-8"
 );
-
-const getImagePath = (filename: string) => {
-  const comfyuiDir = process.env.COMFYUI_DIR as string;
-  if (!comfyuiDir) {
-    throw new Error("COMFYUI_DIR 环境变量未设置");
-  }
-  return path.join(comfyuiDir, "input", filename);
-};
 
 styleTransferRouter.post(
   "/",
@@ -48,7 +41,7 @@ styleTransferRouter.post(
 
       const styleImagePath = getImagePath(styleImage.originalname);
       const contentImagePath = getImagePath(contentImage.originalname);
-      
+
       const contentImageName = contentImage.originalname;
       const styleImageName = styleImage.originalname;
 
