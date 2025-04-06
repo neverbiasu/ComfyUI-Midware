@@ -83,3 +83,5 @@ ipadapterScribbleRouter.post(
     }
   }
 );
+
+export default ipadapterScribbleRouter;

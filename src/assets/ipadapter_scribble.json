@@ -7,22 +7,10 @@
       "sampler_name": "euler",
       "scheduler": "simple",
       "denoise": 1,
-      "model": [
-        "44",
-        0
-      ],
-      "positive": [
-        "29",
-        0
-      ],
-      "negative": [
-        "29",
-        1
-      ],
-      "latent_image": [
-        "5",
-        0
-      ]
+      "model": ["44", 0],
+      "positive": ["29", 0],
+      "negative": ["29", 1],
+      "latent_image": ["5", 0]
     },
     "class_type": "KSampler",
     "_meta": {
@@ -51,14 +39,8 @@
   },
   "8": {
     "inputs": {
-      "samples": [
-        "3",
-        0
-      ],
-      "vae": [
-        "4",
-        2
-      ]
+      "samples": ["3", 0],
+      "vae": ["4", 2]
     },
     "class_type": "VAEDecode",
     "_meta": {
@@ -67,10 +49,7 @@
   },
   "16": {
     "inputs": {
-      "images": [
-        "8",
-        0
-      ]
+      "images": ["8", 0]
     },
     "class_type": "PreviewImage",
     "_meta": {
@@ -79,14 +58,8 @@
   },
   "18": {
     "inputs": {
-      "text": [
-        "43",
-        0
-      ],
-      "clip": [
-        "4",
-        1
-      ]
+      "text": ["43", 0],
+      "clip": ["4", 1]
     },
     "class_type": "CLIPTextEncode",
     "_meta": {
@@ -96,10 +69,7 @@
   "19": {
     "inputs": {
       "text": "",
-      "clip": [
-        "4",
-        1
-      ]
+      "clip": ["4", 1]
     },
     "class_type": "CLIPTextEncode",
     "_meta": {
@@ -111,10 +81,7 @@
       "interpolation": "LANCZOS",
       "crop_position": "top",
       "sharpening": 0.05,
-      "image": [
-        "60",
-        0
-      ]
+      "image": ["60", 0]
     },
     "class_type": "PrepImageForClipVision",
     "_meta": {
@@ -124,10 +91,7 @@
   "24": {
     "inputs": {
       "preset": "PLUS (high strength)",
-      "model": [
-        "4",
-        0
-      ]
+      "model": ["4", 0]
     },
     "class_type": "IPAdapterUnifiedLoader",
     "_meta": {
@@ -159,22 +123,10 @@
       "strength": 1,
       "start_percent": 0,
       "end_percent": 1,
-      "positive": [
-        "52",
-        0
-      ],
-      "negative": [
-        "19",
-        0
-      ],
-      "control_net": [
-        "30",
-        0
-      ],
-      "image": [
-        "38",
-        0
-      ]
+      "positive": ["52", 0],
+      "negative": ["19", 0],
+      "control_net": ["30", 0],
+      "image": ["38", 0]
     },
     "class_type": "ControlNetApplyAdvanced",
     "_meta": {
@@ -192,10 +144,7 @@
   },
   "33": {
     "inputs": {
-      "images": [
-        "38",
-        0
-      ]
+      "images": ["38", 0]
     },
     "class_type": "PreviewImage",
     "_meta": {
@@ -207,10 +156,7 @@
       "low_threshold": 100,
       "high_threshold": 200,
       "resolution": 512,
-      "image": [
-        "23",
-        0
-      ]
+      "image": ["23", 0]
     },
     "class_type": "CannyEdgePreprocessor",
     "_meta": {
@@ -222,10 +168,7 @@
       "prompt_mode": "fast",
       "image_analysis": "off",
       "text": "",
-      "image": [
-        "23",
-        0
-      ]
+      "image": ["23", 0]
     },
     "class_type": "ClipInterrogator",
     "_meta": {
@@ -234,10 +177,7 @@
   },
   "43": {
     "inputs": {
-      "text": [
-        "42",
-        0
-      ],
+      "text": ["42", 0],
       "text2": "a drawing of a group of animals in a room, kids fantasy drawing, underwater scene, kid's drawing, a child's drawing, kids drawing, children’s drawing, children's drawing, undersea temple with fish, drawing for children, child's drawing, undersea environment, by Un'ichi Hiratsuka, children's book drawing, children drawing"
     },
     "class_type": "ShowText|pysssss",
@@ -254,22 +194,10 @@
       "start_at": 0,
       "end_at": 1,
       "embeds_scaling": "V only",
-      "model": [
-        "24",
-        0
-      ],
-      "ipadapter": [
-        "24",
-        1
-      ],
-      "image_style": [
-        "45",
-        0
-      ],
-      "image_composition": [
-        "38",
-        0
-      ]
+      "model": ["24", 0],
+      "ipadapter": ["24", 1],
+      "image_style": ["45", 0],
+      "image_composition": ["38", 0]
     },
     "class_type": "IPAdapterStyleComposition",
     "_meta": {
@@ -281,10 +209,7 @@
       "interpolation": "LANCZOS",
       "crop_position": "top",
       "sharpening": 0.05,
-      "image": [
-        "61",
-        0
-      ]
+      "image": ["61", 0]
     },
     "class_type": "PrepImageForClipVision",
     "_meta": {
@@ -293,10 +218,7 @@
   },
   "49": {
     "inputs": {
-      "images": [
-        "23",
-        0
-      ]
+      "images": ["23", 0]
     },
     "class_type": "PreviewImage",
     "_meta": {
@@ -305,14 +227,8 @@
   },
   "52": {
     "inputs": {
-      "conditioning_1": [
-        "18",
-        0
-      ],
-      "conditioning_2": [
-        "53",
-        0
-      ]
+      "conditioning_1": ["18", 0],
+      "conditioning_2": ["53", 0]
     },
     "class_type": "ConditioningCombine",
     "_meta": {
@@ -321,14 +237,8 @@
   },
   "53": {
     "inputs": {
-      "text": [
-        "55",
-        0
-      ],
-      "clip": [
-        "4",
-        1
-      ]
+      "text": ["55", 0],
+      "clip": ["4", 1]
     },
     "class_type": "CLIPTextEncode",
     "_meta": {
@@ -340,10 +250,7 @@
       "prompt_mode": "fast",
       "image_analysis": "off",
       "text": "",
-      "image": [
-        "45",
-        0
-      ]
+      "image": ["45", 0]
     },
     "class_type": "ClipInterrogator",
     "_meta": {
@@ -352,10 +259,7 @@
   },
   "55": {
     "inputs": {
-      "text": [
-        "54",
-        0
-      ],
+      "text": ["54", 0],
       "text2": "the starr by vincent van gogh van gogh van gogh van van van van van van van van van van van van van van van van van van van van van van, style of van gogh starry night, vincent van gogh painting, van gogh painting, starry-night!!!!!!!!!!!!!!!!!!!!, stary night painting, style of vincent van gogh, the starry night, van gogh art style"
     },
     "class_type": "ShowText|pysssss",
@@ -369,10 +273,7 @@
       "width": 512,
       "height": 512,
       "crop": "disabled",
-      "image": [
-        "26",
-        0
-      ]
+      "image": ["26", 0]
     },
     "class_type": "ImageScale",
     "_meta": {
@@ -385,10 +286,7 @@
       "width": 512,
       "height": 512,
       "crop": "disabled",
-      "image": [
-        "25",
-        0
-      ]
+      "image": ["25", 0]
     },
     "class_type": "ImageScale",
     "_meta": {
