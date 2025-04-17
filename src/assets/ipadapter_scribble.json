@@ -1,7 +1,7 @@
 {
   "3": {
     "inputs": {
-      "seed": 1102090125130055,
+      "seed": 501941644360031,
       "steps": 30,
       "cfg": 1.6,
       "sampler_name": "euler",
@@ -59,6 +59,9 @@
   "18": {
     "inputs": {
       "text": ["43", 0],
+      "speak_and_recognation": {
+        "__value__": [false, true]
+      },
       "clip": ["4", 1]
     },
     "class_type": "CLIPTextEncode",
@@ -69,6 +72,9 @@
   "19": {
     "inputs": {
       "text": "",
+      "speak_and_recognation": {
+        "__value__": [false, true]
+      },
       "clip": ["4", 1]
     },
     "class_type": "CLIPTextEncode",
@@ -100,8 +106,7 @@
   },
   "25": {
     "inputs": {
-      "image": "5.jpg",
-      "upload": "image"
+      "image": "2.jpg"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -110,8 +115,7 @@
   },
   "26": {
     "inputs": {
-      "image": "WechatIMG779.jpeg",
-      "upload": "image"
+      "image": "WechatIMG779.jpeg"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -167,7 +171,6 @@
     "inputs": {
       "prompt_mode": "fast",
       "image_analysis": "off",
-      "text": "",
       "image": ["23", 0]
     },
     "class_type": "ClipInterrogator",
@@ -178,7 +181,7 @@
   "43": {
     "inputs": {
       "text": ["42", 0],
-      "text2": "a drawing of a group of animals in a room, kids fantasy drawing, underwater scene, kid's drawing, a child's drawing, kids drawing, children’s drawing, children's drawing, undersea temple with fish, drawing for children, child's drawing, undersea environment, by Un'ichi Hiratsuka, children's book drawing, children drawing"
+      "text2": "a drawing of a group of animals in a room, kids fantasy drawing, underwater scene, kid's drawing, a child's drawing, children's drawing, children’s drawing, kids drawing, undersea temple with fish, drawing for children, child's drawing, undersea environment, by Un'ichi Hiratsuka, children's book drawing, children drawing"
     },
     "class_type": "ShowText|pysssss",
     "_meta": {
@@ -238,6 +241,9 @@
   "53": {
     "inputs": {
       "text": ["55", 0],
+      "speak_and_recognation": {
+        "__value__": [false, true]
+      },
       "clip": ["4", 1]
     },
     "class_type": "CLIPTextEncode",
@@ -249,7 +255,6 @@
     "inputs": {
       "prompt_mode": "fast",
       "image_analysis": "off",
-      "text": "",
       "image": ["45", 0]
     },
     "class_type": "ClipInterrogator",
@@ -260,7 +265,7 @@
   "55": {
     "inputs": {
       "text": ["54", 0],
-      "text2": "the starr by vincent van gogh van gogh van gogh van van van van van van van van van van van van van van van van van van van van van van, style of van gogh starry night, vincent van gogh painting, van gogh painting, starry-night!!!!!!!!!!!!!!!!!!!!, stary night painting, style of vincent van gogh, the starry night, van gogh art style"
+      "text2": "a painting of a beach scene with yellow flowers, daffodils, yellow and blue ribbons, lilies and daffodils, background yellow and blue, grass and flowers, rich vivid pastel colors, pastel flowery background, meadow background, soft pastel colors, vibrant pastel colors, vivid pastel colors, some yellow and blue, bright pastel colors, melancholy pastel art, soft bright pastel"
     },
     "class_type": "ShowText|pysssss",
     "_meta": {
