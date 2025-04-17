@@ -1,0 +1,67 @@
+{
+  "1": {
+    "inputs": {
+      "value": "Could u write a program of iris number in c language"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "String"
+    }
+  },
+  "2": {
+    "inputs": {
+      "prompt": [
+        "1",
+        0
+      ],
+      "debug": false,
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen2.5:14b-instruct-q8_0",
+      "system": [
+        "3",
+        0
+      ],
+      "seed": 1230008306,
+      "top_k": 40,
+      "top_p": 0.9,
+      "temperature": 0.7500000000000001,
+      "num_predict": -1,
+      "tfs_z": 1,
+      "keep_alive": 5,
+      "keep_context": false,
+      "format": "text",
+      "speak_and_recognation": {
+        "__value__": [
+          false,
+          true
+        ]
+      }
+    },
+    "class_type": "OllamaGenerateAdvance",
+    "_meta": {
+      "title": "Ollama Generate Advance"
+    }
+  },
+  "3": {
+    "inputs": {
+      "value": ""
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "String"
+    }
+  },
+  "5": {
+    "inputs": {
+      "text": [
+        "2",
+        0
+      ],
+      "text2": "Certainly! I assume you're asking for a C program that deals with the Iris dataset, which is commonly used for classification tasks and machine learning algorithms. However, since \"iris number\" isn't a standard term, let's clarify what you mean by it:\n\n1. If you want to read an Iris dataset from a file (like `iris.csv` or `iris.data`) and print its contents.\n2. Or if you're looking for basic statistical calculations on the iris measurements like finding minima, maxima, means, etc.\n3. Maybe something else?\n\nFor simplicity, I'll provide a basic C program that reads an Iris dataset file (assuming each line is in the format: `sepal_length sepal_width petal_length petal_width class`) and prints out some simple statistics for one of the iris classes.\n\nHere's a simple example to get you started. This program will read from a CSV-like file, calculate some basic stats (min, max, mean) for each attribute, and then print them:\n\n```c\n#include <stdio.h>\n#include <stdlib.h>\n\n#define MAX_LINE_LENGTH 1024\n\n// Function prototypes\nfloat min(float *arr, int size);\nfloat max(float *arr, int size);\nfloat mean(float *arr, int size);\n\nint main() {\n    FILE *file = fopen(\"iris.csv\", \"r\");\n    if (!file) {\n        printf(\"Could not open file\\n\");\n        return 1;\n    }\n\n    // Arrays to store the values\n    float sepal_length[50];\n    float sepal_width[50];\n    float petal_length[50];\n    float petal_width[50];\n\n    int count = 0;\n\n    char line[MAX_LINE_LENGTH], class[20];\n    while (fscanf(file, \"%s %s %s %s %[^\\n]\", \n                  sepal_length + count, sepal_width + count,\n                  petal_length + count, petal_width + count, class) != EOF && count < 50) {\n        if (!strcmp(class, \"setosa\")) { // Assuming we are interested in the 'setosa' type\n            count++;\n        }\n    }\n\n    fclose(file);\n\n    printf(\"Setosa Iris Statistics:\\n\");\n    \n    float sepalLengthMean = mean(sepal_length, count);\n    float sepalsMin = min(sepal_length, count);\n    float sepalsMax = max(sepal_length, count);\n    printf(\"Sepal length: Mean=%.2f Min=%.2f Max=%.2f\\n\", \n           sepalLengthMean, sepalsMin, sepalsMax);\n\n    // Similarly for the rest of the attributes...\n\n}\n\nfloat min(float *arr, int size) {\n    float min = arr[0];\n    for (int i = 1; i < size; ++i)\n        if (arr[i] < min)\n            min = arr[i];\n    return min;\n}\n\nfloat max(float *arr, int size) {\n    float max = arr[0];\n    for (int i = 1; i < size; ++i)\n        if (arr[i] > max)\n            max = arr[i];\n    return max;\n}\n\nfloat mean(float *arr, int size) {\n    float sum = 0.0;\n    for(int i=0;i<size;++i){\n        sum += arr[i];\n    }\n    return (sum/size);\n}\n```\n\nThis program assumes you have an iris dataset file named `iris.csv` in the same directory as your executable and that it contains data formatted with floating-point numbers followed by a class name. Each line corresponds to one Iris flower measurement set.\n\nRemember, this is a very basic example and doesn't handle all possible edge cases (like malformed input or handling other types of irises). If you want more specific functionality or have different requirements, please clarify your request!"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  }
+}
