@@ -1,0 +1,203 @@
+{
+  "1": {
+    "inputs": {
+      "samples": ["9", 0],
+      "vae": ["11", 2]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "2": {
+    "inputs": {},
+    "class_type": "PulidEvaClipLoader",
+    "_meta": {
+      "title": "Load Eva Clip (PuLID)"
+    }
+  },
+  "3": {
+    "inputs": {
+      "provider": "CPU"
+    },
+    "class_type": "PulidInsightFaceLoader",
+    "_meta": {
+      "title": "Load InsightFace (PuLID)"
+    }
+  },
+  "4": {
+    "inputs": {
+      "text": "flaws in the eyes, flaws in the face, flaws, lowres, non-HDRi, low quality, worst quality,artifacts noise, text, watermark, glitch, deformed, mutated, ugly, disfigured, hands, low resolution, partially rendered objects,  deformed or partially rendered eyes, deformed, deformed eyeballs, cross-eyed,blurry, ugly, blur, lowres, bad_source",
+      "speak_and_recognation": {
+        "__value__": [false, true]
+      },
+      "clip": ["14", 1]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "5": {
+    "inputs": {
+      "text": ["18", 0],
+      "speak_and_recognation": {
+        "__value__": [false, true]
+      },
+      "clip": ["14", 1]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "6": {
+    "inputs": {
+      "images": ["1", 0]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "预览图像"
+    }
+  },
+  "7": {
+    "inputs": {
+      "pulid_file": "ip-adapter_pulid_sdxl_fp16.safetensors"
+    },
+    "class_type": "PulidModelLoader",
+    "_meta": {
+      "title": "Load PuLID Model"
+    }
+  },
+  "8": {
+    "inputs": {
+      "method": "fidelity",
+      "weight": 0.8,
+      "start_at": 0,
+      "end_at": 1,
+      "model": ["14", 0],
+      "pulid": ["7", 0],
+      "eva_clip": ["2", 0],
+      "face_analysis": ["3", 0],
+      "image": ["12", 0]
+    },
+    "class_type": "ApplyPulid",
+    "_meta": {
+      "title": "Apply PuLID"
+    }
+  },
+  "9": {
+    "inputs": {
+      "seed": 101345909691695,
+      "steps": 4,
+      "cfg": 1.2,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "sgm_uniform",
+      "denoise": 1,
+      "model": ["8", 0],
+      "positive": ["5", 0],
+      "negative": ["4", 0],
+      "latent_image": ["13", 0]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "K采样器"
+    }
+  },
+  "10": {
+    "inputs": {
+      "unet_name": "sdxl_lightning_4step_unet.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNet加载器"
+    }
+  },
+  "11": {
+    "inputs": {
+      "ckpt_name": "dreamshaperXL_turboDPMSDE.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Checkpoint加载器（简易）"
+    }
+  },
+  "12": {
+    "inputs": {
+      "image": "高福星.jpg"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "加载图像"
+    }
+  },
+  "13": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "空Latent图像"
+    }
+  },
+  "14": {
+    "inputs": {
+      "lora_name": "DarkestDungeonSDXL.safetensors",
+      "strength_model": 1,
+      "strength_clip": 1,
+      "model": ["10", 0],
+      "clip": ["11", 1]
+    },
+    "class_type": "LoraLoader",
+    "_meta": {
+      "title": "加载LoRA"
+    }
+  },
+  "15": {
+    "inputs": {
+      "value": "一名男性赛博忍者"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "String"
+    }
+  },
+  "18": {
+    "inputs": {
+      "prompt": ["15", 0],
+      "debug": false,
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen2.5:14b-instruct",
+      "system": "As an AI prompt optimization specialist, generate refined Stable Diffusion prompts using this template: \"[Quality Booster], [Subject Description], [Style/Genre], [Key Details], [Technical Specs]\". Prioritize: 1) Core subject attributes 2) Artistic style indicators 3) Critical visual details 4) Atmosphere/lighting conditions 5) Camera/rendering parameters. Use concise comma-separated terms with single weight modifiers when necessary. Maintain 20-35 terms total using standardized SDXL syntax. Input: 一个赛博忍者，男性 → Output: (best quality:1.2), cyber ninja, male character, cyberpunk. Only output the prompt without any other words, and the prompt must contains \"close-up, portrait_(object), positive_face, looking_at_viewer, face_shot,front\".",
+      "seed": 1012857118,
+      "top_k": 40,
+      "top_p": 0.9,
+      "temperature": 0.8,
+      "num_predict": -1,
+      "tfs_z": 1,
+      "keep_alive": 5,
+      "keep_context": false,
+      "format": "text",
+      "speak_and_recognation": {
+        "__value__": [false, true]
+      }
+    },
+    "class_type": "OllamaGenerateAdvance",
+    "_meta": {
+      "title": "Ollama Generate Advance"
+    }
+  },
+  "19": {
+    "inputs": {
+      "text": ["18", 0],
+      "text2": "(best quality:1.2), cyber ninja, male character, cyberpunk, close-up, portrait(object), positive_face, looking_at_viewer, face_shot, front, high_contrast, neon_lights, futuristic_outfit, katana_sword, tactical_gear, urban_background, night_time, detailed_textures, sharp_focus, soft_ambient_lighting, 8k_resolution"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  }
+}
