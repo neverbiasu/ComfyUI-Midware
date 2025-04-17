@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import multer from "multer";
 import fs from "fs";
-import path from "path";
 import comfyuiService from "../services/comfyuiService";
 import dotenv from "dotenv";
 import { sendImageResponse } from "../utils/send_image";
