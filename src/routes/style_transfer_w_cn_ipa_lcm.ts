@@ -60,7 +60,7 @@ styleTransferWCnIpaLcmRouter.post(
 
       await new Promise((resolve) => setTimeout(resolve, 30000));
 
-      const filepaths = await comfyuiService.getResult(promptId);
+      const filepaths = await comfyuiService.getImageResult(promptId);
 
       sendImageResponse(res, filepaths);
     } catch (error) {

@@ -26,7 +26,7 @@ class ComfyUIService {
     }
   }
 
-  async getResult(promptId: string): Promise<string[]> {
+  async getImageResult(promptId: string): Promise<string[]> {
     try {
       const response = await axios.get(
         `${this.baseUrl}/api/history/${promptId}`

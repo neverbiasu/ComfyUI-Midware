@@ -64,7 +64,7 @@ ipadapterScribbleRouter.post(
       while (!filepaths && retries < maxRetries) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         try {
-          filepaths = await comfyuiService.getResult(promptId);
+          filepaths = await comfyuiService.getImageResult(promptId);
         } catch (error) {
           console.error("Error fetching result:", error);
           retries++;
