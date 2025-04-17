@@ -60,6 +60,41 @@ class ComfyUIService {
       throw new Error("Fetching result failed");
     }
   }
+
+  async getTextResult(promptId: string): Promise<string> {
+    try {
+      const response = await axios.get(
+        `${this.baseUrl}/api/history/${promptId}`
+      );
+
+      const data = response.data[promptId];
+      const outputs = data.outputs;
+
+      if (!outputs || typeof outputs !== "object") {
+        throw new Error("Invalid outputs data");
+      }
+
+      let textResult = "";
+
+      Object.keys(outputs).forEach((key) => {
+        const output = outputs[key];
+        if (output.text) {
+          if (Array.isArray(output.text)) {
+            textResult += output.text.join("");
+          } else if (typeof output.text === "string") {
+            textResult += output.text;
+          }
+        } else {
+          console.warn("Invalid output format:", output);
+        }
+      });
+
+      return textResult;
+    } catch (error) {
+      console.error("Error fetching result:", error);
+      throw new Error("Fetching result failed");
+    }
+  }
 }
 
 export default new ComfyUIService();
