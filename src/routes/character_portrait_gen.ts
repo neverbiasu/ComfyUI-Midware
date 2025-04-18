@@ -16,7 +16,7 @@ const upload = multer({ dest: "uploads/" }).fields([
 ]);
 
 const workflowJson = fs.readFileSync(
-  "./src/assets/sdxl_lightning_pulid_lora.json",
+  "./src/assets/character_portrait_gen.json",
   "utf-8"
 );
 
