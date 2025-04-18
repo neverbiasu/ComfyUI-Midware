@@ -1,0 +1,6 @@
+tunnel: midware-tunnel
+credentials-file: C:\Users\DELL\.cloudflared\308c7f02-1c74-4d35-995d-c509f5b1ee14.json
+ingress:
+  - hostname: imagineart.pics
+    service: http://localhost:3000
+  - service: http_status:404
