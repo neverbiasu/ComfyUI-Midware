@@ -1,0 +1,269 @@
+{
+  "1": {
+    "inputs": {
+      "samples": [
+        "13",
+        0
+      ],
+      "vae": [
+        "10",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "2": {
+    "inputs": {},
+    "class_type": "PulidEvaClipLoader",
+    "_meta": {
+      "title": "Load Eva Clip (PuLID)"
+    }
+  },
+  "3": {
+    "inputs": {
+      "provider": "CPU"
+    },
+    "class_type": "PulidInsightFaceLoader",
+    "_meta": {
+      "title": "Load InsightFace (PuLID)"
+    }
+  },
+  "4": {
+    "inputs": {
+      "text": "flaws in the eyes, flaws in the face, flaws, lowres, non-HDRi, low quality, worst quality,artifacts noise, text, watermark, glitch, deformed, mutated, ugly, disfigured, hands, low resolution, partially rendered objects,  deformed or partially rendered eyes, deformed, deformed eyeballs, cross-eyed,blurry",
+      "speak_and_recognation": {
+        "__value__": [
+          false,
+          true
+        ]
+      },
+      "clip": [
+        "14",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "5": {
+    "inputs": {
+      "text": [
+        "15",
+        0
+      ],
+      "speak_and_recognation": {
+        "__value__": [
+          false,
+          true
+        ]
+      },
+      "clip": [
+        "14",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "6": {
+    "inputs": {
+      "images": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "预览图像"
+    }
+  },
+  "7": {
+    "inputs": {
+      "image": "高福星.jpg"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "加载图像"
+    }
+  },
+  "8": {
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "空Latent图像"
+    }
+  },
+  "9": {
+    "inputs": {
+      "pulid_file": "ip-adapter_pulid_sdxl_fp16.safetensors"
+    },
+    "class_type": "PulidModelLoader",
+    "_meta": {
+      "title": "Load PuLID Model"
+    }
+  },
+  "10": {
+    "inputs": {
+      "ckpt_name": "dreamshaperXL_turboDPMSDE.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Checkpoint加载器（简易）"
+    }
+  },
+  "11": {
+    "inputs": {
+      "unet_name": "sdxl_lightning_4step_unet.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNet加载器"
+    }
+  },
+  "12": {
+    "inputs": {
+      "method": "fidelity",
+      "weight": 1.0000000000000002,
+      "start_at": 0,
+      "end_at": 1,
+      "model": [
+        "14",
+        0
+      ],
+      "pulid": [
+        "9",
+        0
+      ],
+      "eva_clip": [
+        "2",
+        0
+      ],
+      "face_analysis": [
+        "3",
+        0
+      ],
+      "image": [
+        "7",
+        0
+      ]
+    },
+    "class_type": "ApplyPulid",
+    "_meta": {
+      "title": "Apply PuLID"
+    }
+  },
+  "13": {
+    "inputs": {
+      "seed": 244069744875564,
+      "steps": 4,
+      "cfg": 1.2,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "sgm_uniform",
+      "denoise": 1,
+      "model": [
+        "12",
+        0
+      ],
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "K采样器"
+    }
+  },
+  "14": {
+    "inputs": {
+      "lora_name": "DarkestDungeonSDXL.safetensors",
+      "strength_model": 0.8000000000000002,
+      "strength_clip": 1,
+      "model": [
+        "11",
+        0
+      ],
+      "clip": [
+        "10",
+        1
+      ]
+    },
+    "class_type": "LoraLoader",
+    "_meta": {
+      "title": "加载LoRA"
+    }
+  },
+  "15": {
+    "inputs": {
+      "prompt": [
+        "16",
+        0
+      ],
+      "debug": false,
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen2.5:14b-instruct",
+      "system": "You are a bilingual SDXL prompt architect specializing in cinematic scene conversion. Transform Chinese narratives into structured SDXL prompts using this framework: \"[Quality Booster], [Subject Description], [Style/Genre], [Key Details], [Technical Specs], [Scene Description]\". Prioritize: 1) Core subject attributes 2) Artistic style indicators 3) Critical visual details 4) Atmosphere/lighting conditions 5) Camera/rendering parameters. Use concise comma-separated terms with single weight modifiers when necessary. Maintain 20-35 terms total using standardized SDXL syntax. Input: \"雨夜红衣女武士在霓虹巷战\" → Output: (best quality:1.3), positive_face, looking_at_viewer, front, female_samurai, crimson_armor, (katana_combat:1.4), neon-lit_alley, (cyberpunk_style:1.3), (dynamic_lighting:1.2), motion_blur. Only output the prompt without any other words, and the prompt must contains \"game scene, 2d game art, video game\".",
+      "seed": 647949680,
+      "top_k": 40,
+      "top_p": 0.9,
+      "temperature": 0.8,
+      "num_predict": -1,
+      "tfs_z": 1,
+      "keep_alive": 5,
+      "keep_context": false,
+      "format": "text",
+      "speak_and_recognation": {
+        "__value__": [
+          false,
+          true
+        ]
+      }
+    },
+    "class_type": "OllamaGenerateAdvance",
+    "_meta": {
+      "title": "Ollama Generate Advance"
+    }
+  },
+  "16": {
+    "inputs": {
+      "value": "一个赛博男忍者在小巷里飞奔"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "String"
+    }
+  },
+  "17": {
+    "inputs": {
+      "text": [
+        "15",
+        0
+      ],
+      "text2": "(best quality:1.3), male_ninja, looking_at_viewer, front, cyberpunk_style, (fast_motion:1.4), narrow_alley, neon_signs, (game_scene:1.2), 2d_game_art, video_game, motion_blur, dynamic_lighting, shadows_cast"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  }
+}
