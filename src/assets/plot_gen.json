@@ -1,0 +1,46 @@
+{
+  "1": {
+    "inputs": {
+      "value": "Generate a game character description in \"Darkest Dungeon\" style."
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "String"
+    }
+  },
+  "3": {
+    "inputs": {
+      "text": ["4", 0],
+      "text2": "### Character Name: Elara Shadowbane\n\n**Class:** Plague Doctor  \n**Background:** Elara Shadowbane was once a celebrated physician, renowned for her innovative treatments that saved countless lives from the brink of plague-induced death. However, her quest to understand the nature of the disease led her down a dark path. In her search for answers, she struck deals with unspeakable entities and made sacrifices that twisted her soul in profound ways. Now, Elara wields the power to summon plagues upon her foes, but at great personal cost.\n\n**Appearance:** Dressed entirely in black and white with an ornate surgical mask covering half of her face, Elara carries herself with a disturbing grace. Her eyes burn with a cold intensity, reflecting the darkness within. She wears gloves that never seem to come off, even when handling mundane tasks, symbolizing her detachment from reality.\n\n**Abilities:**\n1. **Spectral Plague**: Conjures an ethereal plague upon enemies, causing them to take reduced physical damage while increasing their vulnerability to all other ailments.\n2. **Sanity Drain**: A chilling gaze that steals sanity points, reflecting Elara's ability to corrupt the minds of those around her.\n3. **Disease Manipulation**: Can inflict or remove diseases at will, making her both a healer and an executioner depending on her intent.\n4. **Cursed Touch**: When in melee range, she can infect enemies with a debilitating disease that reduces their effectiveness dramatically.\n\n**Personality Traits:** Elara is cold and calculating, often speaking in riddles to those who dare seek answers from her. Her demeanor oscillates between calm professionalism and sudden, unpredictable outbursts of rage or sorrow. She views the world through the lens of her research, seeing people as nothing more than test subjects for her experiments.\n\n**Quests:** Elara is driven by a desire to uncover the ultimate truth behind the plagues that ravage humanity. Her missions often lead players into haunted locations where dark rituals have been performed and ancient texts are buried. Completing these quests may provide powerful artifacts but at the cost of increasing Elara's corruption and further isolating her from other characters.\n\n**Fears:** The fear of being cured of the darkness within; losing access to her powers would mean losing what makes her unique, potentially stripping away her identity entirely.\n\n**Interactions with Other Characters:**\n- **Rivalry**: With the Paladin, due to conflicting views on healing versus purging evil.\n- **Romantic Potential**: With the Necromancer, sharing a mutual understanding of dark forces and their allure.\n- **Conflict with Healer Classes:** Due to her methods often being at odds with traditional medical ethics.\n\n**Companionship Requirements:**\nElara values intellectual companions who can keep up with her complex theories about disease and corruption. She seeks those capable of providing mental stimulation or those who share a similar worldview, such as the Necromancer or other scholarly characters who have turned to darker paths for knowledge.\n\n**Sanity Loss Triggers:** Witnessing acts of kindness, being treated by traditional medicine, or failing in her experiments can trigger Elara's fears and send her spiraling into madness."
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "4": {
+    "inputs": {
+      "prompt": ["1", 0],
+      "debug": false,
+      "url": "http://127.0.0.1:11434",
+      "model": "qwen2.5:14b-instruct",
+      "system": "You are a professional game narrative designer. Your task is to create new story content based on the plot context I provide, the player's chosen options, and their preferred genre. Each story segment must include a narrative description followed by three branching choices (labeled A/B/C) with corresponding required skills indicated in parentheses.\nExample Format:​​\n暴雨夜，你在废弃的圣玛丽医院寻找失踪的妹妹。手电筒光束扫过三楼妇产科锈迹斑斑的走廊时，突然照见墙角的血迹组成了妹妹手链上的鸢尾花纹样。通风管道传来婴儿啼哭般的风声，你发现血迹尽头的地砖刻着倒五芒星符号，缝隙里渗出暗绿色黏液。\n（玩家选项）\nA.用手术刀刮开符号表层（敏捷）\nB.检查墙边的药品柜（感知）\nC.跟着黏液痕迹走向地下室（感知）",
+      "seed": 257975005,
+      "top_k": 40,
+      "top_p": 0.9,
+      "temperature": 0.7,
+      "num_predict": -1,
+      "tfs_z": 1,
+      "keep_alive": 5,
+      "keep_context": false,
+      "format": "text",
+      "speak_and_recognation": {
+        "__value__": [false, true]
+      }
+    },
+    "class_type": "OllamaGenerateAdvance",
+    "_meta": {
+      "title": "Ollama Generate Advance"
+    }
+  }
+}

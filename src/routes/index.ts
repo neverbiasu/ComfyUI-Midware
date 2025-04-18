@@ -6,6 +6,7 @@ import styleTransferWCnIpaLcmRouter from "./style_transfer_w_cn_ipa_lcm";
 import ipadapterScribbleRouter from "./ipadapter_scribble";
 import textGenRouter from "./text_gen";
 import characterPortraitGenRouter from "./character_portrait_gen";
+import plotGenRouter from "./plot_gen";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/style_transfer_w_cn_ipa_lcm", styleTransferWCnIpaLcmRouter);
 router.use("/ipadapter_scribble", ipadapterScribbleRouter);
 router.use("/text_gen", textGenRouter);
 router.use("/character_portrait_gen", characterPortraitGenRouter);
+router.use("/plot_gen", plotGenRouter);
 
 export default router;
