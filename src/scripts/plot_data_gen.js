@@ -33,7 +33,12 @@ if (!fs.existsSync(DATA_DIR)) {
  * @param {string} prompt 剧情提示词
  * @returns {Promise<string>} 生成的剧情文本
  */
-async function generatePlot(prompt: string): Promise<string> {
+/**
+ * 调用plot_gen接口生成剧情
+ * @param {string} prompt 剧情提示词
+ * @returns {Promise} 生成的剧情文本
+ */
+async function generatePlot(prompt) {
   try {
     const response = await axios.post(
       API_URL,
@@ -48,7 +53,7 @@ async function generatePlot(prompt: string): Promise<string> {
     );
 
     return response.data;
-  } catch (error: unknown) {
+  } catch (error) {
     if (error instanceof AxiosError) {
       console.error("生成剧情失败:", error.message);
       if (error.response) {
@@ -61,17 +66,12 @@ async function generatePlot(prompt: string): Promise<string> {
   }
 }
 
-interface ParsedStory {
-  fullText: string;
-  selectedChoice: string;
-}
-
 /**
  * 解析剧情文本，提取选项和选择
- * @param text 剧情文本
- * @returns 包含剧情、选项和选择的对象
+ * @param {string} text 剧情文本
+ * @returns {Object} 包含剧情、选项和选择的对象
  */
-function parseStoryAndChoices(text: string): ParsedStory {
+function parseStoryAndChoices(text) {
   // 查找包含[选择]标记的选项
   const choiceRegex = /([A-C])[.、：:]\s*(.*?)\s*\[选择\]/i;
   const match = text.match(choiceRegex);
@@ -89,20 +89,15 @@ function parseStoryAndChoices(text: string): ParsedStory {
     );
   }
 
-  return {
-    fullText: text,
-    selectedChoice,
-  };
+  return { fullText: text, selectedChoice };
 }
 
 /**
  * 批量生成剧情并保存
  */
-async function batchGeneratePlots(): Promise<void> {
+async function batchGeneratePlots() {
+  let storyContext = INITIAL_PROMPT;
   let currentPrompt = INITIAL_PROMPT;
-  let storyContext = "";
-
-  console.log("开始批量生成剧情...");
 
   for (let i = 0; i < BATCH_SIZE; i++) {
     try {
@@ -130,7 +125,7 @@ async function batchGeneratePlots(): Promise<void> {
 
       // 暂停一下，避免频繁请求
       await new Promise((resolve) => setTimeout(resolve, 2000));
-    } catch (error: unknown) {
+    } catch (error) {
       if (error instanceof Error) {
         console.error(`第${i + 1}次生成失败:`, error.message);
       } else {
@@ -140,10 +135,9 @@ async function batchGeneratePlots(): Promise<void> {
       // 失败后等待更长时间再重试
       await new Promise((resolve) => setTimeout(resolve, 5000));
       i--; // 重试当前轮次
+      i--; // 重试当前轮次
     }
   }
-
-  console.log("\n批量生成完成! 所有剧情已保存到:", DATA_DIR);
 }
 
 // 执行批量生成
