@@ -1,7 +1,7 @@
-import axios, { AxiosError } from "axios";
-import * as fs from "fs";
-import * as path from "path";
-import dotenv from "dotenv";
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -54,7 +54,7 @@ async function generatePlot(prompt) {
 
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof axios.AxiosError) {
       console.error("生成剧情失败:", error.message);
       if (error.response) {
         console.error("响应数据:", error.response.data);
@@ -134,7 +134,6 @@ async function batchGeneratePlots() {
 
       // 失败后等待更长时间再重试
       await new Promise((resolve) => setTimeout(resolve, 5000));
-      i--; // 重试当前轮次
       i--; // 重试当前轮次
     }
   }
