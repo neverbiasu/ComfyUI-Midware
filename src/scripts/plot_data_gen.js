@@ -6,11 +6,22 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // 配置参数
-const API_URL = "http://localhost:3000/plot_gen"; // 根据你的实际服务端口调整
+const API_URL = "http://localhost:3000/api/text_gen"; // 改用text_gen接口
 const BATCH_SIZE = 10; // 要生成的剧情数量
 const DATA_DIR = path.join(__dirname, "../data");
-const INITIAL_PROMPT = `你是一个交互式剧情生成器。我会给你一个剧情开头，请你生成剧情发展和三个可能的选项(A、B、C)，然后自动选择一个最有趣的选项(在选项后标注[选择])。
-剧情开头：拉里昂王国曾经是一个繁荣昌盛的土地，充满了魔法和奇迹，但随着国王的衰老，王国开始衰落。
+
+// 系统提示词 - 参考原有plot_gen的系统提示
+const SYSTEM_PROMPT = `You are a professional game narrative designer. Your task is to create new story content based on the plot context I provide, the player's chosen options, and their preferred genre. Each story segment must include a narrative description followed by three branching choices (labeled A/B/C) with corresponding required skills indicated in parentheses.
+
+Please ensure your response contains:
+1. A narrative continuation of the story
+2. Three options (A, B, C) with skill requirements in parentheses
+3. Select the most interesting option by adding [选择] after it
+
+Do not continue the story beyond this choice point.`;
+
+// 初始用户提示
+const INITIAL_USER_PROMPT = `剧情开头：拉里昂王国曾经是一个繁荣昌盛的土地，充满了魔法和奇迹，但随着国王的衰老，王国开始衰落。
 
 现在，随着国王的去世，他的权力狂热的兄弟回到了王位，将整个拉里昂王国陷入混乱！
 
@@ -29,21 +40,18 @@ if (!fs.existsSync(DATA_DIR)) {
 }
 
 /**
- * 调用plot_gen接口生成剧情
- * @param {string} prompt 剧情提示词
+ * 调用text_gen接口生成剧情
+ * @param {string} userPrompt 用户提示词
+ * @param {string} systemPrompt 系统提示词
  * @returns {Promise<string>} 生成的剧情文本
  */
-/**
- * 调用plot_gen接口生成剧情
- * @param {string} prompt 剧情提示词
- * @returns {Promise} 生成的剧情文本
- */
-async function generatePlot(prompt) {
+async function generatePlot(userPrompt, systemPrompt) {
   try {
     const response = await axios.post(
       API_URL,
       {
-        prompt: prompt,
+        userPrompt: userPrompt,
+        systemPrompt: systemPrompt,
       },
       {
         headers: {
@@ -62,7 +70,7 @@ async function generatePlot(prompt) {
     } else if (error instanceof Error) {
       console.error("生成剧情失败:", error.message);
     }
-    throw error; // Re-throw the error after logging
+    throw error;
   }
 }
 
@@ -96,32 +104,32 @@ function parseStoryAndChoices(text) {
  * 批量生成剧情并保存
  */
 async function batchGeneratePlots() {
-  let storyContext = INITIAL_PROMPT;
-  let currentPrompt = INITIAL_PROMPT;
+  let userPrompt = INITIAL_USER_PROMPT;
+  let storyArchive = ""; // 用于保存所有生成的剧情
 
   for (let i = 0; i < BATCH_SIZE; i++) {
     try {
       console.log(`\n[第${i + 1}/${BATCH_SIZE}次生成]`);
-      console.log(`提示词: ${currentPrompt.substring(0, 100)}...`);
+      console.log(`用户提示词: ${userPrompt.substring(0, 100)}...`);
 
-      // 调用API生成剧情
-      const storyText = await generatePlot(currentPrompt);
+      // 调用API生成剧情，传递用户提示和系统提示
+      const storyText = await generatePlot(userPrompt, SYSTEM_PROMPT);
 
       // 解析剧情和选择
       const { fullText, selectedChoice } = parseStoryAndChoices(storyText);
 
-      // 更新剧情上下文
-      storyContext += `\n\n--- 剧情片段 ${i + 1} ---\n\n${fullText}`;
+      // 更新剧情存档
+      storyArchive += `\n\n--- 剧情片段 ${i + 1} ---\n\n${fullText}`;
 
       // 保存当前完整剧情
       const filename = `story_batch_${new Date()
         .toISOString()
         .replace(/[:.]/g, "-")}_${i + 1}.txt`;
-      fs.writeFileSync(path.join(DATA_DIR, filename), storyContext);
+      fs.writeFileSync(path.join(DATA_DIR, filename), storyArchive);
+      console.log(`✓ 已保存剧情片段 ${i + 1}`);
 
-      // 提取选择后的内容作为下一轮的输入
-      const nextPromptSuffix = `根据之前的剧情，玩家选择了选项${selectedChoice}，请继续生成剧情发展和新的三个选项(A、B、C)，然后自动选择一个最有趣的选项(在选项后标注[选择])。`;
-      currentPrompt = `${storyContext}\n\n${nextPromptSuffix}`;
+      // 更新下一轮的用户提示
+      userPrompt = `${fullText}\n\n玩家选择了选项${selectedChoice}。根据这个选择，请继续故事：`;
 
       // 暂停一下，避免频繁请求
       await new Promise((resolve) => setTimeout(resolve, 2000));
