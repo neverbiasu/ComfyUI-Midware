@@ -6,8 +6,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // 配置参数
-const API_URL = "http://localhost:3000/api/text_gen"; // 改用text_gen接口
-const BATCH_SIZE = 10; // 要生成的剧情数量
+const API_URL = "http://localhost:3000/api/text_gen";
+const BATCH_SIZE = 100; // 要生成的剧情数量
 const DATA_DIR = path.join(__dirname, "../data");
 
 // 系统提示词 - 参考原有plot_gen的系统提示
@@ -105,7 +105,6 @@ function parseStoryAndChoices(text) {
  */
 async function batchGeneratePlots() {
   let userPrompt = INITIAL_USER_PROMPT;
-  let storyArchive = ""; // 用于保存所有生成的剧情
 
   for (let i = 0; i < BATCH_SIZE; i++) {
     try {
@@ -118,14 +117,9 @@ async function batchGeneratePlots() {
       // 解析剧情和选择
       const { fullText, selectedChoice } = parseStoryAndChoices(storyText);
 
-      // 更新剧情存档
-      storyArchive += `\n\n--- 剧情片段 ${i + 1} ---\n\n${fullText}`;
-
-      // 保存当前完整剧情
-      const filename = `story_batch_${new Date()
-        .toISOString()
-        .replace(/[:.]/g, "-")}_${i + 1}.txt`;
-      fs.writeFileSync(path.join(DATA_DIR, filename), storyArchive);
+      // 保存当前剧情片段（不再累积，只保存当前片段）
+      const filename = `${i + 1}.txt`;
+      fs.writeFileSync(path.join(DATA_DIR, filename), fullText);
       console.log(`✓ 已保存剧情片段 ${i + 1}`);
 
       // 更新下一轮的用户提示
