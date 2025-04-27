@@ -40,7 +40,7 @@ plotGenRouter.post(
 
       // Wait for the generation to complete
       let retries = 0;
-      const maxRetries = 30;
+      const maxRetries = 100;
       let textResult;
 
       while (!textResult && retries < maxRetries) {
@@ -48,7 +48,6 @@ plotGenRouter.post(
         try {
           textResult = await comfyuiService.getTextResult(promptId);
         } catch (error) {
-          console.error("Error fetching result:", error);
           retries++;
         }
       }

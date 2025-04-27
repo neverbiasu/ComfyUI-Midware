@@ -94,14 +94,13 @@ characterPortraitGenRouter.post(
 
       let filepaths;
       let retries = 0;
-      const maxRetries = 30;
+      const maxRetries = 100;
 
       while (!filepaths && retries < maxRetries) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         try {
           filepaths = await comfyuiService.getImageResult(promptId);
         } catch (error) {
-          console.error("Error fetching result:", error);
           retries++;
         }
       }

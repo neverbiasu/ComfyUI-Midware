@@ -62,7 +62,11 @@ styleTransferWCnIpaLcmRouter.post(
 
       const filepaths = await comfyuiService.getImageResult(promptId);
 
-      sendImageResponse(res, filepaths);
+      if (filepaths) {
+        sendImageResponse(res, filepaths);
+      } else {
+        res.status(500).json({ error: "Failed to retrieve image paths" });
+      }
     } catch (error) {
       if (error instanceof Error) {
         res.status(500).json({ error: error.message });

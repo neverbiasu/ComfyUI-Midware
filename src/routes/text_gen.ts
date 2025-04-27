@@ -45,11 +45,24 @@ textGenRouter.post(
       };
       const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
 
-      await new Promise((resolve) => setTimeout(resolve, 30000));
+      let retries = 0;
+      const maxRetries = 100;
+      let textResult;
 
-      const textResult = await comfyuiService.getTextResult(promptId);
-      console.log("textResult", textResult);
-      sendTextResponse(res, textResult);
+      while (!textResult && retries < maxRetries) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        try {
+          textResult = await comfyuiService.getTextResult(promptId);
+        } catch (error) {
+          retries++;
+        }
+      }
+
+      if (textResult) {
+        sendTextResponse(res, textResult);
+      } else {
+        res.status(500).json({ error: "Failed to retrieve generated text" });
+      }
     } catch (error) {
       console.error("Error generating text:", error);
       res.status(500).json({ error: "Internal server error" });
