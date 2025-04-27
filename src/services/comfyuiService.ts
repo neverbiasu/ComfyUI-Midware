@@ -66,38 +66,45 @@ class ComfyUIService {
     }
   }
 
-  async getImageResult(promptId: string): Promise<string[]> {
+  async getImageResult(promptId: string): Promise<string[] | null> {
     try {
       const response = await axios.get(
         `${this.baseUrl}/api/history/${promptId}`
       );
 
-      const data = response.data[promptId];
-      const outputs = data.outputs;
+      if (!response.data || !response.data[promptId]) {
+        return null;
+      }
 
-      if (!outputs || typeof outputs !== "object") {
-        throw new Error("Invalid outputs data");
+      const data = response.data[promptId];
+
+      if (!data.outputs || typeof data.outputs !== "object") {
+        return null;
       }
 
       const filepaths: string[] = [];
 
-      Object.keys(outputs).forEach((key) => {
-        const output = outputs[key];
+      // 遍历outputs查找图像
+      Object.keys(data.outputs).forEach((key) => {
+        const output = data.outputs[key];
         if (output.images && Array.isArray(output.images)) {
           output.images.forEach((image: any) => {
             const filename = image.filename;
             const folder = image.type;
             filepaths.push(`${this.comfyUIDir}/${folder}/${filename}`);
           });
-        } else {
-          console.warn("Invalid output format:", output);
         }
       });
 
-      return filepaths;
+      // 如果找到了图像，返回路径数组；否则返回null
+      return filepaths.length > 0 ? filepaths : null;
     } catch (error) {
-      console.error("Error fetching result:", error);
-      throw new Error("Fetching result failed");
+      // 只记录非404错误，因为404可能只是表示结果尚未生成
+      if (axios.isAxiosError(error) && error.response?.status !== 404) {
+        console.error("Error fetching result:", error.message);
+      }
+      // 返回null而不是抛出错误
+      return null;
     }
   }
 
