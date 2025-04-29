@@ -142,6 +142,49 @@ class ComfyUIService {
       throw new Error("Fetching result failed");
     }
   }
+
+  async getAudioResult(promptId: string): Promise<string[] | null> {
+    try {
+      const response = await axios.get(
+        `${this.baseUrl}/api/history/${promptId}`
+      );
+
+      if (!response.data || !response.data[promptId]) {
+        return null;
+      }
+
+      const data = response.data[promptId];
+
+      if (!data.outputs || typeof data.outputs !== "object") {
+        return null;
+      }
+
+      const filepaths: string[] = [];
+
+      Object.keys(data.outputs).forEach((key) => {
+        const output = data.outputs[key];
+        if (output.audio_files && Array.isArray(output.audio_files)) {
+          output.audio_files.forEach((audio: any) => {
+            const filename = audio.filename;
+            const folder = audio.type || "audio";
+            filepaths.push(`${this.comfyUIDir}/${folder}/${filename}`);
+          });
+        }
+        else if (output.audio && typeof output.audio === "object") {
+          const filename = output.audio.filename;
+          const folder = output.audio.type || "audio";
+          filepaths.push(`${this.comfyUIDir}/${folder}/${filename}`);
+        }
+      });
+
+      return filepaths.length > 0 ? filepaths : null;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status !== 404) {
+        console.error("Error fetching audio result:", error.message);
+      }
+      return null;
+    }
+  }
 }
 
 export default new ComfyUIService();
