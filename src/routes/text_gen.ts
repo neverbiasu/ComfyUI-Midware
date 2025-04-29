@@ -14,10 +14,7 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 }).none();
 
-const workflowJson = fs.readFileSync(
-  "./src/assets/ollama_qwen_14b_instruct.json",
-  "utf-8"
-);
+const workflowJson = fs.readFileSync("./src/assets/ollama.json", "utf-8");
 
 textGenRouter.post(
   "/",
