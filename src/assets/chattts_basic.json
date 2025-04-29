@@ -1,0 +1,48 @@
+{
+  "1": {
+    "inputs": {
+      "model_path": "(auto)"
+    },
+    "class_type": "ChatTTSLoader",
+    "_meta": {
+      "title": "ChatTTS Model Loader"
+    }
+  },
+  "2": {
+    "inputs": {
+      "text": "hello, I am Chat T T S [speed_3]",
+      "seed": 4210960321,
+      "temperature": 0.2,
+      "top_P": 0.7,
+      "top_K": 20,
+      "split_batch": false,
+      "speak_and_recognation": 0,
+      "model": ["1", 0],
+      "speaker_params": ["3", 0]
+    },
+    "class_type": "ChatTTS_Sampler",
+    "_meta": {
+      "title": "ChatTTS Sampler"
+    }
+  },
+  "3": {
+    "inputs": {
+      "seed": 685761012,
+      "model": ["1", 0]
+    },
+    "class_type": "ChatTTS_SpeakerSample",
+    "_meta": {
+      "title": "ChatTTS Speaker Sampler"
+    }
+  },
+  "4": {
+    "inputs": {
+      "audioUI": "",
+      "audio": ["2", 0]
+    },
+    "class_type": "PreviewAudio",
+    "_meta": {
+      "title": "预览音频"
+    }
+  }
+}
