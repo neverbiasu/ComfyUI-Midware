@@ -12,9 +12,18 @@ if (!fs.existsSync(OUT_DIR)) {
 }
 
 const lengthTypes = [
-  { label: "短", desc: "请用一句话简短描述" },
-  { label: "中", desc: "请用2-3句话中等长度描述" },
-  { label: "长", desc: "请用一段详细描述，突出背景和细节" },
+  {
+    label: "短",
+    desc: "请用一句话简短描述，只描述角色设定，不要包含动作或行为。",
+  },
+  {
+    label: "中",
+    desc: "请用2-3句话中等长度描述，只描述角色设定，不要包含动作或行为。",
+  },
+  {
+    label: "长",
+    desc: "请用一段详细描述，突出背景和细节，只描述角色设定，不要包含动作或行为。",
+  },
 ];
 
 const baseThemes = [
@@ -30,12 +39,14 @@ const baseThemes = [
   "赏金女猎人",
 ];
 
+let globalIdx = 1;
+
 async function main() {
   for (let batchIdx = 0; batchIdx < COUNT / BATCH; batchIdx++) {
     const theme = baseThemes[batchIdx % baseThemes.length];
     const lengthType = lengthTypes[batchIdx % lengthTypes.length];
     const userPrompt = `请生成10个${theme}风格的角色描述，每个${lengthType.label}，每个描述之间用"---"分隔。${lengthType.desc}`;
-    const systemPrompt = `你是一名专业的角色设定文案设计师，请根据用户输入的主题和长度要求，生成10个不同的${lengthType.label}角色描述，每个描述之间用"---"分隔，内容不要重复。`;
+    const systemPrompt = `你是一名专业的角色设定文案设计师，请根据用户输入的主题和长度要求，生成10个不同的${lengthType.label}角色描述，每个描述之间用"---"分隔，内容不要重复，只描述角色设定，不要写动作或行为。`;
 
     try {
       const res = await axios.post(
@@ -55,13 +66,15 @@ async function main() {
         .split(/-{3,}/)
         .map((s) => s.trim())
         .filter(Boolean);
-      const filename = `character_desc_batch_${batchIdx + 1}.txt`;
-      fs.writeFileSync(
-        path.join(OUT_DIR, filename),
-        descList.join("\n---\n"),
-        "utf-8"
-      );
-      console.log(`★ 已保存: ${filename}（共${descList.length}条）`);
+
+      // 每个描述单独存为 1.txt、2.txt ...
+      descList.forEach((desc) => {
+        const filename = `${globalIdx}.txt`;
+        fs.writeFileSync(path.join(OUT_DIR, filename), desc, "utf-8");
+        console.log(`★ 已保存: ${filename}`);
+        globalIdx++;
+      });
+
       await new Promise((r) => setTimeout(r, 1000));
     } catch (err) {
       console.error(`第${batchIdx + 1}批生成失败:`, err.message);
