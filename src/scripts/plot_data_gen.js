@@ -5,6 +5,20 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+// Parse command line arguments
+const args = process.argv.slice(2);
+let startRound = 0;
+if (args.length > 0) {
+  const roundArg = parseInt(args[0]);
+  if (!isNaN(roundArg) && roundArg >= 0 && roundArg < BATCH_SIZE) {
+    startRound = roundArg;
+    console.log(`从第 ${startRound} 轮开始继续生成`);
+  } else {
+    console.error(`无效的起始轮次: ${args[0]}. 必须在 0 和 ${BATCH_SIZE-1} 之间`);
+    process.exit(1);
+  }
+}
+
 // 配置参数
 const API_URL = "http://localhost:3000/api/text_gen";
 const BATCH_SIZE = 100; // 要生成的剧情数量
@@ -144,10 +158,34 @@ function parseStoryAndChoices(text, round) {
  * 批量生成剧情并保存
  */
 async function batchGeneratePlots() {
+  // 初始化用户提示
   let userPrompt = INITIAL_USER_PROMPT;
   let isStoryEnded = false;
 
-  for (let i = 0; i < BATCH_SIZE && !isStoryEnded; i++) {
+  // 如果从非零轮次开始，需要读取上一轮的内容
+  if (startRound > 0) {
+    const previousRoundFile = path.join(DATA_DIR, `${startRound}.txt`);
+    
+    if (fs.existsSync(previousRoundFile)) {
+      const previousContent = fs.readFileSync(previousRoundFile, 'utf-8');
+      
+      // 解析上一轮的选择
+      const { fullText, selectedChoice } = parseStoryAndChoices(previousContent, startRound - 1);
+      
+      if (selectedChoice) {
+        userPrompt = `${fullText}\n\n玩家选择了选项${selectedChoice}。根据这个选择，请继续故事：`;
+        console.log(`已加载第 ${startRound} 轮内容，选择了选项 ${selectedChoice}`);
+      } else {
+        console.error(`无法从第 ${startRound} 轮确定所选择的选项`);
+        process.exit(1);
+      }
+    } else {
+      console.error(`未找到上一轮文件: ${previousRoundFile}`);
+      process.exit(1);
+    }
+  }
+
+  for (let i = startRound; i < BATCH_SIZE && !isStoryEnded; i++) {
     try {
       // 获取当前轮数对应的系统提示词
       const currentSystemPrompt = getSystemPromptForRound(i);
