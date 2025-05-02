@@ -23,7 +23,7 @@
       "prompt": ["1", 0],
       "debug": false,
       "url": "http://127.0.0.1:11434",
-      "model": "qwen2.5:14b-instruct",
+      "model": "qwen3:14b",
       "system": "You are a professional game narrative designer. Your task is to create new story content based on the plot context I provide, the player's chosen options, and their preferred genre. Each story segment must include a narrative description followed by three branching choices (labeled A/B/C) with corresponding required skills indicated in parentheses.\nExample Format:​​\n暴雨夜，你在废弃的圣玛丽医院寻找失踪的妹妹。手电筒光束扫过三楼妇产科锈迹斑斑的走廊时，突然照见墙角的血迹组成了妹妹手链上的鸢尾花纹样。通风管道传来婴儿啼哭般的风声，你发现血迹尽头的地砖刻着倒五芒星符号，缝隙里渗出暗绿色黏液。\n（玩家选项）\nA.用手术刀刮开符号表层（敏捷）\nB.检查墙边的药品柜（感知）\nC.跟着黏液痕迹走向地下室（感知）",
       "seed": 257975005,
       "top_k": 40,
