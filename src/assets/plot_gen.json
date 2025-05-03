@@ -1,7 +1,7 @@
 {
   "1": {
     "inputs": {
-      "value": "Generate a game character description in \"Darkest Dungeon\" style."
+      "value": "剧情开头：2077年的新扬城，一座被霓虹灯和巨型广告牌覆盖的钢铁丛林。这里的天空被污染成永恒的灰色，被各大公司控制的区域宛如孤岛，而城市的底层则是犯罪和绝望的温床。  你——代号\"幽影\"，曾是底层贫民窟的孤儿，后来加入街头帮派求生存，现已成为一名半机械化的雇佣兵。今晚，你刚完成一项为某大公司清除竞争对手的任务，血迹未干的机械臂提醒着你的选择。  当你走进\"电子天堂\"酒吧寻找下一单生意时，发现一位曾被你救过的少女——莉娜正在吧台等你。她的眼中闪烁着绝望，嘴唇颤抖着说：\"他们抓走了我的弟弟，说要把他改造成战斗机器人...只因为他目睹了公司的秘密交易。\"  你的金属手指敲击着吧台，内心善良与雇佣兵的职业素养开始拉扯。该如何回应？  A. 直截了当询问更多细节，确定是否值得冒险（智力） B. 安抚她的情绪，承诺帮助她找回弟弟（魅力） C. 暗中联系你的黑客朋友，获取公司内部布局（感知）`"
     },
     "class_type": "PrimitiveString",
     "_meta": {
@@ -10,8 +10,8 @@
   },
   "3": {
     "inputs": {
-      "text": ["4", 0],
-      "text2": "### Character Name: Elara Shadowbane\n\n**Class:** Plague Doctor  \n**Background:** Elara Shadowbane was once a celebrated physician, renowned for her innovative treatments that saved countless lives from the brink of plague-induced death. However, her quest to understand the nature of the disease led her down a dark path. In her search for answers, she struck deals with unspeakable entities and made sacrifices that twisted her soul in profound ways. Now, Elara wields the power to summon plagues upon her foes, but at great personal cost.\n\n**Appearance:** Dressed entirely in black and white with an ornate surgical mask covering half of her face, Elara carries herself with a disturbing grace. Her eyes burn with a cold intensity, reflecting the darkness within. She wears gloves that never seem to come off, even when handling mundane tasks, symbolizing her detachment from reality.\n\n**Abilities:**\n1. **Spectral Plague**: Conjures an ethereal plague upon enemies, causing them to take reduced physical damage while increasing their vulnerability to all other ailments.\n2. **Sanity Drain**: A chilling gaze that steals sanity points, reflecting Elara's ability to corrupt the minds of those around her.\n3. **Disease Manipulation**: Can inflict or remove diseases at will, making her both a healer and an executioner depending on her intent.\n4. **Cursed Touch**: When in melee range, she can infect enemies with a debilitating disease that reduces their effectiveness dramatically.\n\n**Personality Traits:** Elara is cold and calculating, often speaking in riddles to those who dare seek answers from her. Her demeanor oscillates between calm professionalism and sudden, unpredictable outbursts of rage or sorrow. She views the world through the lens of her research, seeing people as nothing more than test subjects for her experiments.\n\n**Quests:** Elara is driven by a desire to uncover the ultimate truth behind the plagues that ravage humanity. Her missions often lead players into haunted locations where dark rituals have been performed and ancient texts are buried. Completing these quests may provide powerful artifacts but at the cost of increasing Elara's corruption and further isolating her from other characters.\n\n**Fears:** The fear of being cured of the darkness within; losing access to her powers would mean losing what makes her unique, potentially stripping away her identity entirely.\n\n**Interactions with Other Characters:**\n- **Rivalry**: With the Paladin, due to conflicting views on healing versus purging evil.\n- **Romantic Potential**: With the Necromancer, sharing a mutual understanding of dark forces and their allure.\n- **Conflict with Healer Classes:** Due to her methods often being at odds with traditional medical ethics.\n\n**Companionship Requirements:**\nElara values intellectual companions who can keep up with her complex theories about disease and corruption. She seeks those capable of providing mental stimulation or those who share a similar worldview, such as the Necromancer or other scholarly characters who have turned to darker paths for knowledge.\n\n**Sanity Loss Triggers:** Witnessing acts of kindness, being treated by traditional medicine, or failing in her experiments can trigger Elara's fears and send her spiraling into madness."
+      "text_0": "<think>\n好的，用户希望我扮演一位资深的文字游戏作者，根据提供的剧情开头继续发展故事，并生成三个选项。我需要先仔细分析用户提供的初始信息，确保续写部分符合设定的风格和主题。\n\n首先，故事背景是2077年的新扬城，一个充满科技与人性冲突的环境，主题涉及道德挣扎、生存与救赎。主角是半机械化的雇佣兵“幽影”，刚完成任务，现在面临是否帮助莉娜的抉择。\n\n用户给出的选项中，A、B、C分别对应不同的属性，需要确保每个选项都合理，并且推动剧情发展。同时，用户提到要为最有趣的选项添加[选择]标记，所以需要识别哪个选项更具吸引力。\n\n接下来，我需要考虑如何延续剧情。莉娜的弟弟被公司抓走，可能涉及公司的秘密交易，这可能与主角过去的经历有关联，比如之前的任务是否与公司有关，或者主角是否有过类似被改造的经历。这些线索可以为后续故事埋下伏笔。\n\n对于选项A，询问细节，可能需要使用智力属性，这可能引导玩家进入调查阶段，揭示更多关于公司的秘密。选项B，安抚情绪，使用魅力属性，可能推动主角与莉娜建立更紧密的联系，但可能不够直接。选项C，联系黑客，使用感知属性，可能提供更多信息，但需要考虑黑客是否可靠，或者是否有隐藏的陷阱。\n\n另外，需要确保故事的道德挣扎元素，主角在帮助莉娜和保持雇佣兵的职业素养之间挣扎，这可能影响后续的选择。例如，如果选择帮助莉娜，可能会面临与雇主的冲突，或者揭示更大的阴谋。\n\n在生成选项时，需要确保每个选项都有明确的后果，并且为后续剧情提供线索。例如，选项A可能发现公司内部的实验数据，选项B可能揭示莉娜弟弟被改造后的状态，选项C可能获得进入公司设施的地图。\n\n最后，需要检查是否符合用户提供的示例格式，确保开头部分交代前情，并继续描述后续发展，选项后标注属性，并标记有趣的选项。\n</think>\n\n（剧情接续）霓虹灯管在莉娜颤抖的睫毛上投下蛛网状的阴影，她脖颈处的仿生皮肤正在渗出淡蓝色的冷却液——那是公司对\"非自愿改造者\"的标记。你机械臂的液压关节发出轻微的嗡鸣，仿佛在回应记忆中某个被删除的片段：七年前在贫民窟被军方抓走的少年，他脖颈上也有同样的蓝色纹路。\n\n（玩家选项）\nA. 用机械臂的扫描仪解析莉娜颈部的冷却液成分（智力）[选择]\nB. 突然抓住莉娜手腕将她拽进后巷（敏捷）\nC. 拿出全息投影仪播放三年前某次人形改造实验的黑市录像（感知）",
+      "text": ["4", 0]
     },
     "class_type": "ShowText|pysssss",
     "_meta": {
@@ -24,10 +24,10 @@
       "debug": false,
       "url": "http://127.0.0.1:11434",
       "model": "qwen3:14b",
-      "system": "You are a professional game narrative designer. Your task is to create new story content based on the plot context I provide, the player's chosen options, and their preferred genre. Each story segment must include a narrative description followed by three branching choices (labeled A/B/C) with corresponding required skills indicated in parentheses.\nExample Format:​​\n暴雨夜，你在废弃的圣玛丽医院寻找失踪的妹妹。手电筒光束扫过三楼妇产科锈迹斑斑的走廊时，突然照见墙角的血迹组成了妹妹手链上的鸢尾花纹样。通风管道传来婴儿啼哭般的风声，你发现血迹尽头的地砖刻着倒五芒星符号，缝隙里渗出暗绿色黏液。\n（玩家选项）\nA.用手术刀刮开符号表层（敏捷）\nB.检查墙边的药品柜（感知）\nC.跟着黏液痕迹走向地下室（感知）",
-      "seed": 257975005,
-      "top_k": 40,
-      "top_p": 0.9,
+      "system": ["5", 0],
+      "seed": 1583934785,
+      "top_k": 20,
+      "top_p": 0.8,
       "temperature": 0.7,
       "num_predict": -1,
       "tfs_z": 1,
@@ -41,6 +41,15 @@
     "class_type": "OllamaGenerateAdvance",
     "_meta": {
       "title": "Ollama Generate Advance"
+    }
+  },
+  "5": {
+    "inputs": {
+      "value": "扮演一位资深的文字游戏作者，请你根据之前发生的故事和玩家做出的选择和结果，并参考故事的风格倾向，为角色继续讲述，在故事的开头你需要简单交代前情并继续描述后续的发展，并为玩家生成三个可以选择的行动，每个行动后用括号标注这个选择会需要使用玩家的哪项属性，可以选择的属性包括无、力量、敏捷、体质、感知、魅力、智力。当前是剧情的开端部分，你应该逐步展开故事，并尽可能为后续的故事提供线索和引导。  请记得为最有趣的选项添加[选择]标记。故事应反映角色的过去经历，并与故事风格主题（道德挣扎、生存与救赎、科技与人性）保持一致。  Example Output:  暴雨夜，你在废弃的圣玛丽医院寻找失踪的妹妹。手电筒光束扫过三楼妇产科锈迹斑斑的走廊时，突然照见墙角的血迹组成了妹妹手链上的鸢尾花纹样。通风管道传来婴儿啼哭般的风声，你发现血迹尽头的地砖刻着倒五芒星符号，缝隙里渗出暗绿色黏液。  （玩家选项）  A.用手术刀刮开符号表层（敏捷）  B.检查墙边的药品柜（感知）  C.跟着黏液痕迹走向地下室（感知）"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "String"
     }
   }
 }
