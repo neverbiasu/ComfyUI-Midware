@@ -111,7 +111,7 @@
   "12": {
     "inputs": {
       "method": "fidelity",
-      "weight": 0.7000000000000002,
+      "weight": 0.7,
       "start_at": 0,
       "end_at": 1,
       "model": ["14", 0],
