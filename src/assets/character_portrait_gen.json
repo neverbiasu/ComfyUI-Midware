@@ -27,7 +27,7 @@
   },
   "4": {
     "inputs": {
-      "text": "flaws in the eyes, flaws in the face, flaws, lowres, non-HDRi, low quality, worst quality,artifacts noise, text, watermark, glitch, deformed, mutated, ugly, disfigured, hands, low resolution, partially rendered objects,  deformed or partially rendered eyes, deformed, deformed eyeballs, cross-eyed,blurry, ugly, blur, lowres, bad_source",
+      "text": "flaws in the eyes, flaws in the face, flaws, lowres, non-HDRi, low quality, worst quality,artifacts noise, text, watermark, glitch, deformed, mutated, ugly, disfigured, hands, low resolution, partially rendered objects,  deformed or partially rendered eyes, deformed, deformed eyeballs, cross-eyed,blurry, ugly, blur, lowres, bad_source, broken arms",
       "speak_and_recognation": {
         "__value__": [false, true]
       },
@@ -79,7 +79,8 @@
       "pulid": ["7", 0],
       "eva_clip": ["2", 0],
       "face_analysis": ["3", 0],
-      "image": ["12", 0]
+      "image": ["12", 0],
+      "attn_mask": ["12", 1]
     },
     "class_type": "ApplyPulid",
     "_meta": {
@@ -88,15 +89,15 @@
   },
   "9": {
     "inputs": {
-      "seed": 101345909691695,
+      "seed": 233511296827329,
       "steps": 4,
       "cfg": 1.2,
       "sampler_name": "dpmpp_2m",
       "scheduler": "sgm_uniform",
       "denoise": 1,
-      "model": ["8", 0],
-      "positive": ["5", 0],
-      "negative": ["4", 0],
+      "model": ["28", 0],
+      "positive": ["29", 0],
+      "negative": ["29", 1],
       "latent_image": ["13", 0]
     },
     "class_type": "KSampler",
@@ -168,11 +169,11 @@
   "18": {
     "inputs": {
       "prompt": ["15", 0],
-      "debug": false,
+      "debug": true,
       "url": "http://127.0.0.1:11434",
       "model": "qwen2.5:14b-instruct",
       "system": "As an AI prompt optimization specialist, generate refined Stable Diffusion prompts using this template: \"[Quality Booster], [Subject Description], [Style/Genre], [Key Details], [Technical Specs]\". Prioritize: 1) Core subject attributes 2) Artistic style indicators 3) Critical visual details 4) Atmosphere/lighting conditions 5) Camera/rendering parameters. Use concise comma-separated terms with single weight modifiers when necessary. Maintain 20-35 terms total using standardized SDXL syntax. Input: 一个赛博忍者，男性 → Output: (best quality:1.2), cyber ninja, male character, cyberpunk. Only output the prompt without any other words, and the prompt must contains \"close-up, portrait_(object), positive_face, looking_at_viewer, face_shot,front\".",
-      "seed": 1012857118,
+      "seed": 1541995375,
       "top_k": 40,
       "top_p": 0.9,
       "temperature": 0.8,
@@ -192,12 +193,70 @@
   },
   "19": {
     "inputs": {
-      "text": ["18", 0],
-      "text2": "(best quality:1.2), cyber ninja, male character, cyberpunk, close-up, portrait(object), positive_face, looking_at_viewer, face_shot, front, high_contrast, neon_lights, futuristic_outfit, katana_sword, tactical_gear, urban_background, night_time, detailed_textures, sharp_focus, soft_ambient_lighting, 8k_resolution"
+      "text_0": "(best quality:1.2), cyber ninja, male character, cyberpunk, close-up, portrait(object), positive_face, looking_at_viewer, face_shot, front, detailed_eyes, neon_lights, high_contrast, urban_background, night_time, realistic_textures, sharp_focus, shallow_depth_of_field, 8k_resolution",
+      "text": ["18", 0]
     },
     "class_type": "ShowText|pysssss",
     "_meta": {
       "title": "Show Text 🐍"
+    }
+  },
+  "20": {
+    "inputs": {
+      "model": ["8", 0]
+    },
+    "class_type": "CFGZeroStar",
+    "_meta": {
+      "title": "CFGZeroStar"
+    }
+  },
+  "28": {
+    "inputs": {
+      "b1": 1.3000000000000003,
+      "b2": 1.4000000000000004,
+      "s1": 0.9,
+      "s2": 0.2,
+      "model": ["20", 0]
+    },
+    "class_type": "FreeU",
+    "_meta": {
+      "title": "FreeU"
+    }
+  },
+  "29": {
+    "inputs": {
+      "strength": 0.7000000000000002,
+      "start_percent": 0,
+      "end_percent": 0.9000000000000002,
+      "positive": ["5", 0],
+      "negative": ["4", 0],
+      "control_net": ["30", 0],
+      "image": ["31", 0],
+      "vae": ["11", 2]
+    },
+    "class_type": "ControlNetApplyAdvanced",
+    "_meta": {
+      "title": "应用ControlNet（旧版高级）"
+    }
+  },
+  "30": {
+    "inputs": {
+      "control_net_name": "controlnet-union-sdxl-1.0-promax.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "加载ControlNet模型"
+    }
+  },
+  "31": {
+    "inputs": {
+      "preprocessor": "DepthAnythingPreprocessor",
+      "resolution": 512,
+      "image": ["12", 0]
+    },
+    "class_type": "AIO_Preprocessor",
+    "_meta": {
+      "title": "AIO Aux Preprocessor"
     }
   }
 }
