@@ -63,10 +63,15 @@ function getRandom(arr, n) {
   return result;
 }
 
-// 从指定目录随机加载测试数据集（图像和描述独立随机选）
+// 从指定目录随机加载测试数据集（图像和描述独立随机选），并复制到ablation目录下
 function loadTestData(n) {
   const imageDir = path.join(__dirname, "../data/100");
   const descDir = path.join(__dirname, "../data/character_desc");
+  const ablationPortraitDir = path.join(__dirname, "../data/ablation/portrait");
+  const ablationDescDir = path.join(
+    __dirname,
+    "../data/ablation/character_desc"
+  );
 
   if (!fs.existsSync(imageDir)) {
     console.error(`图像目录不存在: ${imageDir}`);
@@ -75,6 +80,12 @@ function loadTestData(n) {
   if (!fs.existsSync(descDir)) {
     console.error(`描述目录不存在: ${descDir}`);
     return [];
+  }
+  if (!fs.existsSync(ablationPortraitDir)) {
+    fs.mkdirSync(ablationPortraitDir, { recursive: true });
+  }
+  if (!fs.existsSync(ablationDescDir)) {
+    fs.mkdirSync(ablationDescDir, { recursive: true });
   }
 
   const imageFiles = fs
@@ -97,9 +108,20 @@ function loadTestData(n) {
       const description = fs
         .readFileSync(path.join(descDir, selectedDescs[i]), "utf-8")
         .trim();
+      const portraitName = `rand${i + 1}${path.extname(selectedImages[i])}`;
+      const descName = `rand${i + 1}.txt`;
+      // 复制到ablation目录下
+      fs.copyFileSync(
+        path.join(imageDir, selectedImages[i]),
+        path.join(ablationPortraitDir, portraitName)
+      );
+      fs.copyFileSync(
+        path.join(descDir, selectedDescs[i]),
+        path.join(ablationDescDir, descName)
+      );
       testData.push({
         description: description,
-        portrait: selectedImages[i],
+        portrait: portraitName,
         base: `rand${i + 1}`,
       });
     } catch (error) {
@@ -107,7 +129,7 @@ function loadTestData(n) {
     }
   }
 
-  console.log(`随机抽取了 ${testData.length} 组测试数据`);
+  console.log(`随机抽取并复制了 ${testData.length} 组测试数据`);
   return testData;
 }
 
@@ -122,9 +144,9 @@ if (!fs.existsSync(resultsDir)) {
 
 // 执行采样器与调度器消融实验
 async function runSamplerSchedulerAblation() {
-  const outputDir = path.join(resultsDir, "sampler_scheduler");
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
+  const outputBaseDir = path.join(resultsDir, "sampler_scheduler");
+  if (!fs.existsSync(outputBaseDir)) {
+    fs.mkdirSync(outputBaseDir, { recursive: true });
   }
 
   console.log("开始执行采样器与调度器消融实验...");
@@ -132,6 +154,10 @@ async function runSamplerSchedulerAblation() {
   for (const testCase of testData) {
     for (const sampler of experiments.sampler_scheduler.samplers) {
       for (const scheduler of experiments.sampler_scheduler.schedulers) {
+        const comboDir = path.join(outputBaseDir, `${sampler}_${scheduler}`);
+        if (!fs.existsSync(comboDir)) {
+          fs.mkdirSync(comboDir, { recursive: true });
+        }
         try {
           const result = await sendRequest({
             characterDescription: testCase.description,
@@ -147,8 +173,8 @@ async function runSamplerSchedulerAblation() {
             sampler,
             scheduler,
           });
-          fs.writeFileSync(path.join(outputDir, filename), result, "binary");
-          console.log(`生成图片: ${filename}`);
+          fs.writeFileSync(path.join(comboDir, filename), result, "binary");
+          console.log(`生成图片: ${comboDir}/${filename}`);
         } catch (error) {
           console.error(
             `生成失败: sampler=${sampler}, scheduler=${scheduler}`,
@@ -164,15 +190,22 @@ async function runSamplerSchedulerAblation() {
 
 // 执行UNet模型消融实验
 async function runUnetAblation() {
-  const outputDir = path.join(resultsDir, "unet");
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
+  const outputBaseDir = path.join(resultsDir, "unet");
+  if (!fs.existsSync(outputBaseDir)) {
+    fs.mkdirSync(outputBaseDir, { recursive: true });
   }
 
   console.log("开始执行UNet模型消融实验...");
 
   for (const testCase of testData) {
     for (const unet of experiments.unet.models) {
+      const unetDir = path.join(
+        outputBaseDir,
+        unet.replace(/\.safetensors$/, "")
+      );
+      if (!fs.existsSync(unetDir)) {
+        fs.mkdirSync(unetDir, { recursive: true });
+      }
       try {
         const result = await sendRequest({
           characterDescription: testCase.description,
@@ -186,8 +219,8 @@ async function runUnetAblation() {
           base: testCase.base,
           unet,
         });
-        fs.writeFileSync(path.join(outputDir, filename), result, "binary");
-        console.log(`生成图片: ${filename}`);
+        fs.writeFileSync(path.join(unetDir, filename), result, "binary");
+        console.log(`生成图片: ${unetDir}/${filename}`);
       } catch (error) {
         console.error(`生成失败: unet=${unet}`, error.message);
       }
@@ -199,15 +232,19 @@ async function runUnetAblation() {
 
 // 执行CFG-Zero-Star消融实验
 async function runCfgZeroStarAblation() {
-  const outputDir = path.join(resultsDir, "cfg_zero_star");
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
+  const outputBaseDir = path.join(resultsDir, "cfg_zero_star");
+  if (!fs.existsSync(outputBaseDir)) {
+    fs.mkdirSync(outputBaseDir, { recursive: true });
   }
 
   console.log("开始执行CFG-Zero-Star消融实验...");
 
   for (const testCase of testData) {
     for (const cfg_zero_star of experiments.cfg_zero_star.options) {
+      const cfgDir = path.join(outputBaseDir, cfg_zero_star);
+      if (!fs.existsSync(cfgDir)) {
+        fs.mkdirSync(cfgDir, { recursive: true });
+      }
       try {
         const result = await sendRequest({
           characterDescription: testCase.description,
@@ -221,8 +258,8 @@ async function runCfgZeroStarAblation() {
           base: testCase.base,
           cfg_zero_star,
         });
-        fs.writeFileSync(path.join(outputDir, filename), result, "binary");
-        console.log(`生成图片: ${filename}`);
+        fs.writeFileSync(path.join(cfgDir, filename), result, "binary");
+        console.log(`生成图片: ${cfgDir}/${filename}`);
       } catch (error) {
         console.error(
           `生成失败: cfg_zero_star=${cfg_zero_star}`,
