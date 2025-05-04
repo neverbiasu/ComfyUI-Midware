@@ -105,24 +105,24 @@ function loadTestData(n) {
     i++
   ) {
     try {
-      const description = fs
-        .readFileSync(path.join(descDir, selectedDescs[i]), "utf-8")
-        .trim();
-      const portraitName = `rand${i + 1}${path.extname(selectedImages[i])}`;
-      const descName = `rand${i + 1}.txt`;
+      // 保持原始文件名（数字编号），如 1.png、1.txt
+      const portraitName = selectedImages[i];
+      const descName = selectedDescs[i];
       // 复制到ablation目录下
       fs.copyFileSync(
-        path.join(imageDir, selectedImages[i]),
+        path.join(imageDir, portraitName),
         path.join(ablationPortraitDir, portraitName)
       );
       fs.copyFileSync(
-        path.join(descDir, selectedDescs[i]),
+        path.join(descDir, descName),
         path.join(ablationDescDir, descName)
       );
       testData.push({
-        description: description,
+        description: fs
+          .readFileSync(path.join(descDir, descName), "utf-8")
+          .trim(),
         portrait: portraitName,
-        base: `rand${i + 1}`,
+        base: path.parse(portraitName).name, // 例如 "1"
       });
     } catch (error) {
       console.error(`读取描述文件失败: ${selectedDescs[i]}`, error);
