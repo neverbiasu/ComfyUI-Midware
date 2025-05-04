@@ -126,11 +126,15 @@ class ComfyUIService {
       Object.keys(outputs).forEach((key) => {
         const output = outputs[key];
         if (output.text) {
+          let text = "";
           if (Array.isArray(output.text)) {
-            textResult += output.text.join("");
+            text = output.text.join("");
           } else if (typeof output.text === "string") {
-            textResult += output.text;
+            text = output.text;
           }
+
+          // 过滤Qwen3思考过程
+          textResult += this.filterThinkingContent(text);
         } else {
           console.warn("Invalid output format:", output);
         }
@@ -169,8 +173,7 @@ class ComfyUIService {
             const folder = audio.type || "audio";
             filepaths.push(`${this.comfyUIDir}/${folder}/${filename}`);
           });
-        }
-        else if (output.audio && typeof output.audio === "object") {
+        } else if (output.audio && typeof output.audio === "object") {
           const filename = output.audio.filename;
           const folder = output.audio.type || "audio";
           filepaths.push(`${this.comfyUIDir}/${folder}/${filename}`);
@@ -184,6 +187,16 @@ class ComfyUIService {
       }
       return null;
     }
+  }
+
+  /**
+   * 过滤掉模型输出中的思考过程（<think>...</think>标签及内容）
+   * @param text 原始文本
+   * @returns 过滤后的文本
+   */
+  private filterThinkingContent(text: string): string {
+    // 移除<think>...</think>标签及其中的内容
+    return text.replace(/<think>[\s\S]*?<\/think>/g, "");
   }
 }
 
