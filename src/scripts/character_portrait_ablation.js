@@ -151,13 +151,14 @@ async function runSamplerSchedulerAblation() {
 
   console.log("开始执行采样器与调度器消融实验...");
 
-  for (const testCase of testData) {
-    for (const sampler of experiments.sampler_scheduler.samplers) {
-      for (const scheduler of experiments.sampler_scheduler.schedulers) {
-        const comboDir = path.join(outputBaseDir, `${sampler}_${scheduler}`);
-        if (!fs.existsSync(comboDir)) {
-          fs.mkdirSync(comboDir, { recursive: true });
-        }
+  for (const sampler of experiments.sampler_scheduler.samplers) {
+    for (const scheduler of experiments.sampler_scheduler.schedulers) {
+      const comboDir = path.join(outputBaseDir, `${sampler}_${scheduler}`);
+      if (!fs.existsSync(comboDir)) {
+        fs.mkdirSync(comboDir, { recursive: true });
+      }
+      console.log(`>> 正在运行组合: ${sampler} + ${scheduler}`);
+      for (const testCase of testData) {
         try {
           const result = await sendRequest({
             characterDescription: testCase.description,
@@ -167,17 +168,13 @@ async function runSamplerSchedulerAblation() {
             loraStyle: "DarkestDungeonSDXL",
           });
 
-          // 文件命名规则
-          const filename = experiments.sampler_scheduler.filename({
-            base: testCase.base,
-            sampler,
-            scheduler,
-          });
+          // 文件名与portrait文件名一致
+          const filename = testCase.portrait;
           fs.writeFileSync(path.join(comboDir, filename), result, "binary");
           console.log(`生成图片: ${comboDir}/${filename}`);
         } catch (error) {
           console.error(
-            `生成失败: sampler=${sampler}, scheduler=${scheduler}`,
+            `生成失败: sampler=${sampler}, scheduler=${scheduler}, portrait=${testCase.portrait}`,
             error.message
           );
         }
