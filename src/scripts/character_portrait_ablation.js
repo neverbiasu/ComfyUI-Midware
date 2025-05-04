@@ -7,85 +7,112 @@ const FormData = require("form-data");
 const experiments = {
   // 采样器与调度器消融实验
   sampler_scheduler: {
+    // 优化采样器与调度器选择，理由如下：
+    // - 采样器选择覆盖主流实际应用和学术常用类型，兼顾速度、质量和多样性（如Euler、DPM、DDPM、UniPC、IPNDM、DEIS、LCM等）。
+    // - 调度器选择覆盖最常用的调度策略，避免冷门和实验性调度器，减少无效组合。
+    // - 每个采样器只与最有代表性的调度器组合，减少无意义的全排列，提升实验效率。
     samplers: [
-      "euler",
-      "euler_ancestral",
-      "dpm_2",
-      "dpm_2_ancestral",
-      "dpmpp_2s_ancestral",
-      "dpmpp_sde",
-      "dpmpp_2m",
+      "euler_ancestral", // 经典采样器，速度快，常用
+      "dpmpp_2m", // 高质量采样器，SDXL推荐
+      "dpmpp_2s_ancestral", // 兼顾速度和质量
+      "ddpm", // 原始扩散采样器，学术基线
+      "uni_pc", // 新一代高效采样器
+      "ipndm", // 近年提出的高效采样器
+      "deis", // 速度快，质量好
     ],
-    schedulers: ["normal", "karras", "exponential", "sgm_uniform", "simple"],
+    schedulers: [
+      "normal", // 标准调度器，适配大多数采样器
+      "karras", // Karras调度，提升高步数采样质量
+      "exponential", // 指数调度，部分采样器推荐
+      "sgm_uniform", // SGM模型常用
+      "simple", // 简单调度，部分采样器默认
+    ],
+    // 文件命名规则
+    filename: ({ base, sampler, scheduler }) =>
+      `${base}_sampler_${sampler}_scheduler_${scheduler}.png`,
   },
   // UNet模型消融实验
   unet: {
-    models: ["unet_standard", "unet_plus", null], // null表示默认UNet
+    models: [
+      "sdxl_lightning_1step_unet_x0.safetensors",
+      "sdxl_lightning_2step_unet.safetensors",
+      "sdxl_lightning_4step_unet.safetensors",
+    ],
+    filename: ({ base, unet }) => `${base}_unet_${unet}.png`,
   },
   // CFG-Zero-Star消融实验
   cfg_zero_star: {
     options: ["on", "off"],
+    filename: ({ base, cfg_zero_star }) => `${base}_cfg_${cfg_zero_star}.png`,
   },
+  // 每个消融实验总共跑多少组
+  num_samples: 10,
 };
 
-// 从指定目录加载测试数据集
-function loadTestData() {
+// 随机抽取n个元素
+function getRandom(arr, n) {
+  const result = [];
+  const used = new Set();
+  while (result.length < n && used.size < arr.length) {
+    const idx = Math.floor(Math.random() * arr.length);
+    if (!used.has(idx)) {
+      result.push(arr[idx]);
+      used.add(idx);
+    }
+  }
+  return result;
+}
+
+// 从指定目录随机加载测试数据集（图像和描述独立随机选）
+function loadTestData(n) {
   const imageDir = path.join(__dirname, "../data/100");
   const descDir = path.join(__dirname, "../data/character_desc");
 
-  // 确保目录存在
   if (!fs.existsSync(imageDir)) {
     console.error(`图像目录不存在: ${imageDir}`);
     return [];
   }
-
   if (!fs.existsSync(descDir)) {
     console.error(`描述目录不存在: ${descDir}`);
     return [];
   }
 
-  // 读取图像文件
   const imageFiles = fs
     .readdirSync(imageDir)
     .filter((file) => /\.(jpg|jpeg|png)$/i.test(file));
-
-  // 读取描述文件
   const descFiles = fs
     .readdirSync(descDir)
     .filter((file) => file.endsWith(".txt"));
 
-  // 匹配图像和描述
+  const selectedImages = getRandom(imageFiles, n);
+  const selectedDescs = getRandom(descFiles, n);
+
   const testData = [];
-
-  for (const imageFile of imageFiles) {
-    const baseName = imageFile.split(".")[0];
-    const descFile = `${baseName}.txt`;
-
-    // 检查是否存在对应的描述文件
-    if (descFiles.includes(descFile)) {
-      try {
-        const description = fs
-          .readFileSync(path.join(descDir, descFile), "utf-8")
-          .trim();
-        testData.push({
-          description: description,
-          portrait: imageFile, // Store only the filename
-        });
-      } catch (error) {
-        console.error(`读取描述文件失败: ${descFile}`, error);
-      }
+  for (
+    let i = 0;
+    i < Math.min(selectedImages.length, selectedDescs.length);
+    i++
+  ) {
+    try {
+      const description = fs
+        .readFileSync(path.join(descDir, selectedDescs[i]), "utf-8")
+        .trim();
+      testData.push({
+        description: description,
+        portrait: selectedImages[i],
+        base: `rand${i + 1}`,
+      });
+    } catch (error) {
+      console.error(`读取描述文件失败: ${selectedDescs[i]}`, error);
     }
   }
 
-  console.log(`加载了 ${testData.length} 组测试数据`);
-
-  // 如果数据过多，可以只使用一部分进行测试
-  const maxSamples = 5; // 最多使用5组测试数据
-  return testData.slice(0, maxSamples);
+  console.log(`随机抽取了 ${testData.length} 组测试数据`);
+  return testData;
 }
 
 // 加载测试数据集
-const testData = loadTestData();
+const testData = loadTestData(experiments.num_samples);
 
 // 创建结果目录
 const resultsDir = path.join(__dirname, "../data/ablation");
@@ -111,13 +138,15 @@ async function runSamplerSchedulerAblation() {
             portrait: testCase.portrait,
             sampler,
             scheduler,
-            loraStyle: "DarkestDungeonSDXL", // 使用固定风格进行测试
+            loraStyle: "DarkestDungeonSDXL",
           });
 
-          // 将结果保存到对应目录
-          const filename = `${
-            testCase.portrait.split(".")[0]
-          }_${sampler}_${scheduler}.png`;
+          // 文件命名规则
+          const filename = experiments.sampler_scheduler.filename({
+            base: testCase.base,
+            sampler,
+            scheduler,
+          });
           fs.writeFileSync(path.join(outputDir, filename), result, "binary");
           console.log(`生成图片: ${filename}`);
         } catch (error) {
@@ -152,11 +181,11 @@ async function runUnetAblation() {
           loraStyle: "DarkestDungeonSDXL",
         });
 
-        // 将结果保存到对应目录
-        const unetName = unet || "default";
-        const filename = `${
-          testCase.portrait.split(".")[0]
-        }_unet_${unetName}.png`;
+        // 文件命名规则
+        const filename = experiments.unet.filename({
+          base: testCase.base,
+          unet,
+        });
         fs.writeFileSync(path.join(outputDir, filename), result, "binary");
         console.log(`生成图片: ${filename}`);
       } catch (error) {
@@ -187,10 +216,11 @@ async function runCfgZeroStarAblation() {
           loraStyle: "DarkestDungeonSDXL",
         });
 
-        // 将结果保存到对应目录
-        const filename = `${
-          testCase.portrait.split(".")[0]
-        }_cfg_${cfg_zero_star}.png`;
+        // 文件命名规则
+        const filename = experiments.cfg_zero_star.filename({
+          base: testCase.base,
+          cfg_zero_star,
+        });
         fs.writeFileSync(path.join(outputDir, filename), result, "binary");
         console.log(`生成图片: ${filename}`);
       } catch (error) {
@@ -210,13 +240,8 @@ async function sendRequest(params) {
   const formData = new FormData();
   formData.append("characterDescription", params.characterDescription);
 
-  // 添加图片文件 - 修改路径以使用 ../data/100
-  const portraitPath = path.join(
-    __dirname,
-    "../data/100", // Changed directory here
-    params.portrait
-  );
-  // Check if the file exists before attempting to read it
+  // 添加图片文件
+  const portraitPath = path.join(__dirname, "../data/100", params.portrait);
   if (!fs.existsSync(portraitPath)) {
     throw new Error(`Portrait file not found: ${portraitPath}`);
   }
