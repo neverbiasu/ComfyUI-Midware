@@ -108,17 +108,21 @@ class ComfyUIService {
     }
   }
 
-  async getTextResult(promptId: string): Promise<string> {
+  async getTextResult(promptId: string): Promise<string | null> {
     try {
       const response = await axios.get(
         `${this.baseUrl}/api/history/${promptId}`
       );
 
+      if (!response.data || !response.data[promptId]) {
+        return null;
+      }
+
       const data = response.data[promptId];
       const outputs = data.outputs;
 
       if (!outputs || typeof outputs !== "object") {
-        throw new Error("Invalid outputs data");
+        return null;
       }
 
       let textResult = "";
@@ -140,10 +144,12 @@ class ComfyUIService {
         }
       });
 
-      return textResult;
+      return textResult || null;
     } catch (error) {
-      console.error("Error fetching result:", error);
-      throw new Error("Fetching result failed");
+      if (axios.isAxiosError(error) && error.response?.status !== 404) {
+        console.error("Error fetching result:", error.message);
+      }
+      return null;
     }
   }
 

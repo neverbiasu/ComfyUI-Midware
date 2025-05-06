@@ -41,7 +41,7 @@ plotGenRouter.post(
       // Wait for the generation to complete
       let retries = 0;
       const maxRetries = 100;
-      let textResult;
+      let textResult: string | null = null;
 
       while (!textResult && retries < maxRetries) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
