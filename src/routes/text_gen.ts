@@ -23,10 +23,6 @@ textGenRouter.post(
     try {
       const { userPrompt, systemPrompt } = req.body;
 
-      console.log("body", req.body);
-      console.log("userPrompt", userPrompt);
-      console.log("systemPrompt", systemPrompt);
-
       if (!userPrompt || !systemPrompt) {
         res.status(400).json({ error: "Text is required" });
         return;
