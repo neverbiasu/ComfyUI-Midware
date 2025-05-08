@@ -32,6 +32,10 @@ characterPortraitGenRouter.post(
   "/",
   upload,
   async (req: Request, res: Response): Promise<void> => {
+    const requestTime = new Date();
+    console.log(
+      `[character_portrait_gen] 请求收到时间: ${requestTime.toISOString()}`
+    );
     try {
       const { characterDescription, loraStyle } = req.body;
 
@@ -94,7 +98,7 @@ characterPortraitGenRouter.post(
 
       let filepaths;
       let retries = 0;
-      const maxRetries = 100;
+      const maxRetries = 120;
 
       while (!filepaths && retries < maxRetries) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -108,8 +112,18 @@ characterPortraitGenRouter.post(
       if (filepaths) {
         sendImageResponse(res, filepaths);
       } else {
+        console.error("Failed to retrieve image paths:", filepaths);
         res.status(500).json({ error: "Failed to retrieve image paths" });
       }
+      const responseTime = new Date();
+      console.log(
+        `[character_portrait_gen] 请求返回时间: ${responseTime.toISOString()}`
+      );
+      console.log(
+        `[character_portrait_gen] 总耗时: ${
+          (responseTime.getTime() - requestTime.getTime()) / 1000
+        }s`
+      );
     } catch (error) {
       console.error("Error generating character portrait:", error);
       if (error instanceof Error) {
