@@ -173,16 +173,18 @@ class ComfyUIService {
 
       Object.keys(data.outputs).forEach((key) => {
         const output = data.outputs[key];
-        if (output.audio_files && Array.isArray(output.audio_files)) {
-          output.audio_files.forEach((audio: any) => {
-            const filename = audio.filename;
-            const folder = audio.type || "audio";
+        if (output.audio && typeof output.audio === "object") {
+          if (Array.isArray(output.audio)) {
+            output.audio.forEach((audio: any) => {
+              const filename = audio.filename;
+              const folder = audio.type || "temp";
+              filepaths.push(`${this.comfyUIDir}/${folder}/${filename}`);
+            });
+          } else {
+            const filename = output.audio.filename;
+            const folder = output.audio.type || "temp";
             filepaths.push(`${this.comfyUIDir}/${folder}/${filename}`);
-          });
-        } else if (output.audio && typeof output.audio === "object") {
-          const filename = output.audio.filename;
-          const folder = output.audio.type || "audio";
-          filepaths.push(`${this.comfyUIDir}/${folder}/${filename}`);
+          }
         }
       });
 
