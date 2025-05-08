@@ -9,6 +9,7 @@ import characterPortraitGenRouter from "./character_portrait_gen";
 import plotGenRouter from "./plot_gen";
 import plotImageGenRouter from "./plot_image_gen";
 import characterPortraitAblationRouter from "./character_portrait_ablation";
+import chatttsBasicRouter from "./chattts_basic";
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use("/character_portrait_gen", characterPortraitGenRouter);
 router.use("/plot_gen", plotGenRouter);
 router.use("/plot_image_gen", plotImageGenRouter);
 router.use("/character_portrait_ablation", characterPortraitAblationRouter);
+router.use("/chattts_basic", chatttsBasicRouter);
 
 export default router;
