@@ -24,7 +24,7 @@ chatttBasicRouter.post(
   upload,
   async (req: Request, res: Response): Promise<void> => {
     try {
-      const { text, voice = "en-US-Neural2-F" } = req.body;
+      const { text } = req.body;
 
       if (!text) {
         res.status(400).json({ error: "Text input is required" });
@@ -35,15 +35,11 @@ chatttBasicRouter.post(
 
       workflow["2"].inputs.text = text;
 
-      if (workflow["3"] && workflow["3"].inputs.voice_id !== undefined) {
-        workflow["3"].inputs.voice_id = voice;
-      }
-
       const wrappedWorkflow = { prompt: workflow };
       const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
 
       let retries = 0;
-      const maxRetries = 60;
+      const maxRetries = 120;
       let audioFilePaths: string[] | null = null;
 
       console.log("Waiting for audio generation...");
@@ -54,8 +50,7 @@ chatttBasicRouter.post(
           if (retries % 10 === 0) {
             console.log(`Still waiting... (${retries}s)`);
           }
-        } catch (error) {
-        }
+        } catch (error) {}
         retries++;
       }
 
