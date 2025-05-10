@@ -7,6 +7,7 @@ import { sendTextResponse } from "../utils/send_text";
 
 dotenv.config();
 
+let currentPlayerId = "-1";
 const textGenRouter = Router();
 
 const upload = multer({
@@ -21,7 +22,7 @@ textGenRouter.post(
   upload,
   async (req: Request, res: Response): Promise<void> => {
     try {
-      const { userPrompt, systemPrompt } = req.body;
+      const { userPrompt, systemPrompt, playerId } = req.body;
 
       if (!userPrompt || !systemPrompt) {
         res.status(400).json({ error: "Text is required" });
@@ -33,13 +34,20 @@ textGenRouter.post(
       workflow["1"].inputs.value = userPrompt;
       workflow["3"].inputs.value = systemPrompt;
 
+      if (playerId !== currentPlayerId) {
+        delete workflow["7"];
+        delete workflow["2"].inputs.context;
+        currentPlayerId = playerId;
+        console.log("New playerId detected, removing node 7 from workflow.");
+      }
+
       const wrappedWorkflow = {
         prompt: workflow,
       };
       const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
 
       let retries = 0;
-      const maxRetries = 100;
+      const maxRetries = 120;
       let textResult: string | null = null;
 
       while (!textResult && retries < maxRetries) {

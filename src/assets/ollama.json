@@ -1,7 +1,7 @@
 {
   "1": {
     "inputs": {
-      "value": "Introduce yourself."
+      "value": "What's my name"
     },
     "class_type": "PrimitiveString",
     "_meta": {
@@ -10,23 +10,36 @@
   },
   "2": {
     "inputs": {
-      "prompt": ["1", 0],
+      "prompt": [
+        "1",
+        0
+      ],
       "debug": false,
       "url": "http://127.0.0.1:11434",
       "model": "qwen3:14b",
-      "system": ["3", 0],
-      "seed": 1006557610,
+      "system": [
+        "3",
+        0
+      ],
+      "seed": 693730136,
       "top_k": 20,
-      "top_p": 0.8,
-      "temperature": 0.7,
+      "top_p": 0.80,
+      "temperature": 0.70,
       "num_predict": -1,
       "tfs_z": 1,
       "keep_alive": 5,
       "keep_context": false,
       "format": "text",
       "speak_and_recognation": {
-        "__value__": [false, true]
-      }
+        "__value__": [
+          false,
+          true
+        ]
+      },
+      "context": [
+        "7",
+        0
+      ]
     },
     "class_type": "OllamaGenerateAdvance",
     "_meta": {
@@ -44,12 +57,37 @@
   },
   "5": {
     "inputs": {
-      "text_0": "<think>\nOkay, the user asked me to introduce myself. I need to respond in a friendly and engaging way. Let me start by stating my name and role. I should mention that I'm an AI assistant here to help with various tasks. It's important to highlight my capabilities, like answering questions, creating content, and having conversations. I should also invite the user to ask for help or just chat. Keep the tone positive and approachable. Let me make sure the response is concise but covers all the key points. Alright, that should work.\n</think>\n\nHello! I'm Qwen, a large language model developed by Alibaba Cloud. I'm here to help with a wide range of tasks, from answering questions and creating content to having casual conversations. Whether you need assistance with writing, brainstorming ideas, or just want to chat, feel free to ask! How can I help you today? 😊",
-      "text": ["2", 0]
+      "text_0": "<think>\nOkay, the user asked, \"What's my name?\" Let me think. In the previous message, the user introduced himself as David. So, the correct answer is David.\n\nBut wait, the user might be testing if I remember the previous conversation. Since I'm an AI, I don't have memory of past interactions unless the context is provided. However, in the history, the user did mention his name. So, in this case, I should respond with David.\n\nI need to make sure I'm not making up information. The user's name was given in the first message. So, the answer is straightforward. Just confirm that I remember his name as David. Keep it friendly and concise.\n</think>\n\nYour name is David! 😊 You told me that in our first message. Is there anything else you'd like to chat about?",
+      "text": [
+        "2",
+        0
+      ]
     },
     "class_type": "ShowText|pysssss",
     "_meta": {
       "title": "Show Text 🐍"
+    }
+  },
+  "7": {
+    "inputs": {
+      "context_file": "context.png"
+    },
+    "class_type": "OllamaLoadContext",
+    "_meta": {
+      "title": "Ollama Load Context"
+    }
+  },
+  "10": {
+    "inputs": {
+      "filename": "context",
+      "context": [
+        "2",
+        1
+      ]
+    },
+    "class_type": "OllamaSaveContext",
+    "_meta": {
+      "title": "Ollama Save Context"
     }
   }
 }
