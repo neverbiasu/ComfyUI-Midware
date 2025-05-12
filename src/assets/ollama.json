@@ -16,7 +16,7 @@
       ],
       "debug": false,
       "url": "http://127.0.0.1:11434",
-      "model": "qwen3:14b",
+      "model": "qwen2.5:14b",
       "system": [
         "3",
         0
