@@ -1,8 +1,6 @@
 {
   "1": {
-    "inputs": {
-      "model_path": "(auto)"
-    },
+    "inputs": {},
     "class_type": "ChatTTSLoader",
     "_meta": {
       "title": "ChatTTS Model Loader"
@@ -10,15 +8,26 @@
   },
   "2": {
     "inputs": {
-      "text": "hello, I am Chat T T S [speed_3]",
-      "seed": 4210960321,
-      "temperature": 0.2,
+      "text": "你好我是 Chat TTS",
+      "seed": 1929447960,
+      "temperature": 0.3,
       "top_P": 0.7,
       "top_K": 20,
-      "split_batch": false,
-      "speak_and_recognation": 0,
-      "model": ["1", 0],
-      "speaker_params": ["3", 0]
+      "split_batch": 0,
+      "speak_and_recognation": {
+        "__value__": [
+          false,
+          true
+        ]
+      },
+      "model": [
+        "1",
+        0
+      ],
+      "speaker_params": [
+        "3",
+        0
+      ]
     },
     "class_type": "ChatTTS_Sampler",
     "_meta": {
@@ -27,18 +36,24 @@
   },
   "3": {
     "inputs": {
-      "seed": 685761012,
-      "model": ["1", 0]
+      "seed": 42,
+      "model": [
+        "1",
+        0
+      ]
     },
-    "class_type": "ChatTTS_SpeakerSample",
+    "class_type": "ChatTTS_SeedBasedSpeaker",
     "_meta": {
-      "title": "ChatTTS Speaker Sampler"
+      "title": "ChatTTS Seed-Based Speaker"
     }
   },
   "4": {
     "inputs": {
       "audioUI": "",
-      "audio": ["2", 0]
+      "audio": [
+        "2",
+        0
+      ]
     },
     "class_type": "PreviewAudio",
     "_meta": {
