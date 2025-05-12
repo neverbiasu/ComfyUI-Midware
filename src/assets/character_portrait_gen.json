@@ -89,15 +89,15 @@
   },
   "9": {
     "inputs": {
-      "seed": 233511296827329,
+      "seed": 1047842611169224,
       "steps": 4,
       "cfg": 1.2,
       "sampler_name": "dpmpp_2m",
       "scheduler": "sgm_uniform",
       "denoise": 1,
       "model": ["28", 0],
-      "positive": ["29", 0],
-      "negative": ["29", 1],
+      "positive": ["5", 0],
+      "negative": ["4", 0],
       "latent_image": ["13", 0]
     },
     "class_type": "KSampler",
@@ -146,7 +146,7 @@
   },
   "14": {
     "inputs": {
-      "lora_name": "DarkestDungeonSDXL.safetensors",
+      "lora_name": "pixel-art-xl-v1.1.safetensors",
       "strength_model": 1,
       "strength_clip": 1,
       "model": ["10", 0],
@@ -171,9 +171,9 @@
       "prompt": ["15", 0],
       "debug": true,
       "url": "http://127.0.0.1:11434",
-      "model": "qwen2.5:14b-instruct",
+      "model": "qwen3:14b",
       "system": "As an AI prompt optimization specialist, generate refined Stable Diffusion prompts using this template: \"[Quality Booster], [Subject Description], [Style/Genre], [Key Details], [Technical Specs]\". Prioritize: 1) Core subject attributes 2) Artistic style indicators 3) Critical visual details 4) Atmosphere/lighting conditions 5) Camera/rendering parameters. Use concise comma-separated terms with single weight modifiers when necessary. Maintain 20-35 terms total using standardized SDXL syntax. Input: 一个赛博忍者，男性 → Output: (best quality:1.2), cyber ninja, male character, cyberpunk. Only output the prompt without any other words, and the prompt must contains \"close-up, portrait_(object), positive_face, looking_at_viewer, face_shot,front\".",
-      "seed": 1541995375,
+      "seed": 1538682,
       "top_k": 40,
       "top_p": 0.9,
       "temperature": 0.8,
@@ -193,7 +193,7 @@
   },
   "19": {
     "inputs": {
-      "text_0": "(best quality:1.2), cyber ninja, male character, cyberpunk, close-up, portrait(object), positive_face, looking_at_viewer, face_shot, front, detailed_eyes, neon_lights, high_contrast, urban_background, night_time, realistic_textures, sharp_focus, shallow_depth_of_field, 8k_resolution",
+      "text_0": "<think>\nOkay, the user wants me to generate a Stable Diffusion prompt for a male cyber ninja. Let me start by recalling the template they provided: [Quality Booster], [Subject Description], [Style/Genre], [Key Details], [Technical Specs]. They also specified that the prompt must include certain terms like close-up, portrait, positive_face, looking_at_viewer, face_shot, front.\n\nFirst, the Quality Booster. The example they gave was (best quality:1.2), so I should use something similar. Maybe (best quality:1.3) to emphasize high quality.\n\nNext, the Subject Description. The main subject is a male cyber ninja. So I need to include terms like male, cyberpunk, ninja, maybe some descriptors like futuristic or high-tech.\n\nStyle/Genre. Cyberpunk is a given. Maybe add some art styles like digital art, neon, or maybe something like 8K ultra HD for the technical aspect.\n\nKey Details. The user wants specific terms like close-up, portrait, positive_face, looking_at_viewer, face_shot, front. I need to make sure all these are included. Also, the ninja's attributes: maybe glowing eyes, cybernetic enhancements, traditional elements like a katana but with a high-tech twist.\n\nAtmosphere and lighting. Neon lights, dark environment with vibrant colors, maybe some holographic elements. Lighting should be dramatic, with highlights on the face and cybernetics.\n\nTechnical Specs. Camera parameters like 8K ultra HD, depth of field, high resolution. Maybe some render styles like photorealistic or 3D rendering.\n\nPutting it all together, I need to ensure that all required terms are included, the order follows the template, and the total number of terms is between 20-35. Let me check each section again to make sure nothing is missed. Also, use single weight modifiers where necessary, like (best quality:1.3) instead of just best quality. Avoid any markdown and keep it concise with commas separating each term.\n</think>\n\n(best quality:1.3), male cyber ninja, cyberpunk, futuristic, high-tech, close-up, portrait_(object), positive_face, looking_at_viewer, face_shot, front, glowing cybernetic eyes, neon tattoo, traditional ninja attire, holographic katana, dark environment, vibrant neon lights, dramatic lighting, high contrast, 8K ultra HD, photorealistic, detailed facial features, metallic armor, full facial expression, cinematic composition, depth of field, sharp focus, ultra-detailed, 3D rendering, neon accents, futuristic city background, dynamic pose, intricate circuit patterns, glowing aura, cinematic lighting, high resolution, ultra-realistic textures",
       "text": ["18", 0]
     },
     "class_type": "ShowText|pysssss",
@@ -212,8 +212,8 @@
   },
   "28": {
     "inputs": {
-      "b1": 1.3000000000000003,
-      "b2": 1.4000000000000004,
+      "b1": 1.3,
+      "b2": 1.4,
       "s1": 0.9,
       "s2": 0.2,
       "model": ["20", 0]
@@ -221,42 +221,6 @@
     "class_type": "FreeU",
     "_meta": {
       "title": "FreeU"
-    }
-  },
-  "29": {
-    "inputs": {
-      "strength": 0.7000000000000002,
-      "start_percent": 0,
-      "end_percent": 0.9000000000000002,
-      "positive": ["5", 0],
-      "negative": ["4", 0],
-      "control_net": ["30", 0],
-      "image": ["31", 0],
-      "vae": ["11", 2]
-    },
-    "class_type": "ControlNetApplyAdvanced",
-    "_meta": {
-      "title": "应用ControlNet（旧版高级）"
-    }
-  },
-  "30": {
-    "inputs": {
-      "control_net_name": "controlnet-union-sdxl-1.0-promax.safetensors"
-    },
-    "class_type": "ControlNetLoader",
-    "_meta": {
-      "title": "加载ControlNet模型"
-    }
-  },
-  "31": {
-    "inputs": {
-      "preprocessor": "DepthAnythingPreprocessor",
-      "resolution": 512,
-      "image": ["12", 0]
-    },
-    "class_type": "AIO_Preprocessor",
-    "_meta": {
-      "title": "AIO Aux Preprocessor"
     }
   }
 }
