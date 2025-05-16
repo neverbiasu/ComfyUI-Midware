@@ -94,8 +94,21 @@ characterPortraitGenRouter.post(
         prompt: workflow,
       };
 
-      const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
+      const beforeRequestTime = new Date();
+      console.log(
+        `[character_portrait_gen] 请求ComfyUI时间: ${beforeRequestTime.toISOString()}`
 
+)
+      const promptId = await comfyuiService.executeWorkflow(wrappedWorkflow);
+      const afterRequestTime = new Date();
+      console.log(
+        `[character_portrait_gen] ComfyUI返回ID: ${promptId} 时间: ${afterRequestTime.toISOString()}`
+      );
+      console.log(
+        `[character_portrait_gen] ComfyUI请求耗时: ${
+          (afterRequestTime.getTime() - beforeRequestTime.getTime()) / 1000
+        }s`
+      );
       let filepaths;
       let retries = 0;
       const maxRetries = 120;
