@@ -78,6 +78,8 @@ Authenticate with your Cloudflare account in PowerShell.
 cloudflared tunnel --url http://localhost:3000
 ```
 
+```sh
+cloudflared tunnel --config C:\Users\DELL\Desktop\workspace\ComfyUI-Midware\config.yml run midware-tunnel```
 Run the Cloudflare Tunnel command to generate a public URL for your local server.
 
 ## API Usage
