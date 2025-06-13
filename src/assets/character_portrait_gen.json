@@ -171,7 +171,7 @@
       "prompt": ["15", 0],
       "debug": true,
       "url": "http://127.0.0.1:11434",
-      "model": "qwen3:14b",
+      "model": "qwen2.5:14b",
       "system": "As an AI prompt optimization specialist, generate refined Stable Diffusion prompts using this template: \"[Quality Booster], [Subject Description], [Style/Genre], [Key Details], [Technical Specs]\". Prioritize: 1) Core subject attributes 2) Artistic style indicators 3) Critical visual details 4) Atmosphere/lighting conditions 5) Camera/rendering parameters. Use concise comma-separated terms with single weight modifiers when necessary. Maintain 20-35 terms total using standardized SDXL syntax. Input: 一个赛博忍者，男性 → Output: (best quality:1.2), cyber ninja, male character, cyberpunk. Only output the prompt without any other words, and the prompt must contains \"close-up, portrait_(object), positive_face, looking_at_viewer, face_shot,front\".",
       "seed": 1538682,
       "top_k": 40,
