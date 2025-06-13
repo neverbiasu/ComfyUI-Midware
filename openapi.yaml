@@ -1,0 +1,161 @@
+openapi: 3.1.0
+info:
+  title: ComfyUI-Midware API
+  version: 1.0.0
+paths:
+  /api/character_portrait_gen:
+    post:
+      summary: 角色肖像生成
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                characterDescription:
+                  type: string
+                loraStyle:
+                  type: string
+                portrait:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: 成功
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+  /api/plot_gen:
+    post:
+      summary: 剧情文本生成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+              required:
+                - prompt
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  error:
+                    type: string
+  /api/plot_image_gen:
+    post:
+      summary: 剧情插图生成
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                characterDescription:
+                  type: string
+                loraStyle:
+                  type: string
+                portrait:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: 成功
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+  /api/text_gen:
+    post:
+      summary: 通用文本生成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userPrompt:
+                  type: string
+                systemPrompt:
+                  type: string
+                playerId:
+                  type: string
+              required:
+                - userPrompt
+                - systemPrompt
+                - playerId
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userPrompt:
+                  type: string
+                systemPrompt:
+                  type: string
+                playerId:
+                  type: string
+              required:
+                - userPrompt
+                - systemPrompt
+                - playerId
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                  error:
+                    type: string
+  /api/chattts_basic:
+    post:
+      summary: 基础语音合成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+              required:
+                - text
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+              required:
+                - text
+      responses:
+        '200':
+          description: 成功
+          content:
+            audio/flac:
+              schema:
+                type: string
+                format: binary
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+
